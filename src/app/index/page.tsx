@@ -1,9 +1,9 @@
-import Home from "../components/search";
+import Geo from "../feature/geocoding";
 
 export default function Index() {
     return(
         <div>
-            <Home></Home>
+            <Geo></Geo>
         </div>
     );
 }
