@@ -20,7 +20,6 @@ export default function Geo() {
         if (res.ok) {
           const data: GeocodingResponse = await res.json();
           setResult(data.features);
-          console.log(data.features)
         }
       } catch (error) {
         console.error(error);
