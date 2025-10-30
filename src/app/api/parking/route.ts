@@ -1,11 +1,5 @@
 import { NextResponse } from 'next/server';
-
-
-type NearbySearchResponse = {
-  results: any[]; 
-  status: string;
-  error_message?: string;
-};
+import { NearbySearchResponse } from '../../types/parking';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
