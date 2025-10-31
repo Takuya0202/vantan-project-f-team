@@ -7,6 +7,8 @@ import Result from "../components/geocoding/result";
 export default function Geo() {
   const [address, setAddress] = useState("");
   const [result, setResult] = useState<Feature[] | null>(null);
+  const [selectPlace, setSelectPlace] = useState<{ lat: number; lng: number } | null>(null);
+
 
   useEffect(() => {
     if (!address) return;
@@ -43,8 +45,20 @@ export default function Geo() {
        {result && (
         <div>
           {result.map((elem) => (
-              <Result id={elem.id} place_name={elem.place_name} key={elem.id}></Result>
+              <Result 
+                id={elem.id} 
+                place_name={elem.place_name} 
+                key={elem.id} 
+                onClick={() => setSelectPlace({ lat: elem.center[1], lng: elem.center[0] })}>
+              </Result>
           ))}
+        </div>
+      )} 
+
+      {selectPlace && (
+        <div>
+            <p>{selectPlace.lat}</p> 
+            <p>{selectPlace.lng}</p>
         </div>
       )} 
       
