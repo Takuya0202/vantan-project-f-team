@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { NearbySearchResponse } from '../../types/parking';
+import { NearbySearchResponse } from '../../../types/parking';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
