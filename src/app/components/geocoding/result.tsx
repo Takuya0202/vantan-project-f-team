@@ -9,7 +9,7 @@ type props = {
 
 export default function Result({id , place_name, onClick} : props) {
   return (
-        <div>
+        <div className="bg-white">
             <div 
             key={id}
             onClick={() => onClick && onClick(id)}
