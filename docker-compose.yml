@@ -1,8 +1,0 @@
-services:
-  app:
-    build: ./
-    container_name: vantan-project-f-team
-    ports:
-      - 3333:3000
-    volumes:
-      - ./:/workdir
