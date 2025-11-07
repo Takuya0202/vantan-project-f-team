@@ -6,13 +6,14 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { Feature, GeocodingResponse } from "@/types/mapbox";
 import Input from "../components/geocoding/input";
 import Result from "../components/geocoding/result";
+import Destination from "../components/geocoding/destination";
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
 
 export default function Geo() {
   const [address, setAddress] = useState("");
   const [result, setResult] = useState<Feature[] | null>(null);
-  const [selectPlace, setSelectPlace] = useState<{ lat: number; lng: number } | null>(null);
+  const [selectPlace, setSelectPlace] = useState<{ lat: number; lng: number; place_name: string } | null>(null);
 
   useEffect(() => {
     if (!address) return;
@@ -67,24 +68,39 @@ export default function Geo() {
         </div>
       )}
       <div className="relative z-10">
-        <Input 
+        { !selectPlace && (
+          <Input 
           value={address}
           onChange={(e) => setAddress(e.target.value)}
-        />
-      </div>      
+          />
+        )}
+        {selectPlace && (
+          <Destination
+          value={selectPlace?.place_name ?? ""}
+          />
+        )}
+        
       
         {result && (
           <div>
             {result.map((elem) => (
                 <Result 
-                  id={elem.id} 
-                  place_name={elem.place_name} 
-                  key={elem.id} 
-                  onClick={() => setSelectPlace({ lat: elem.center[1], lng: elem.center[0] })}>
-                </Result>
+                id={elem.id} 
+                place_name={elem.place_name} 
+                key={elem.id} 
+                onClick={() => {
+                  setSelectPlace({
+                    lat: elem.center[1],
+                    lng: elem.center[0],
+                    place_name: elem.place_name,
+                  });
+                  setResult(null);
+                }}
+              />
             ))}
           </div>
         )} 
+      </div>
 
 
     </main>
