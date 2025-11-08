@@ -1,6 +1,7 @@
 'use client'
 import { createClient } from "@/utils/supabase/client";
 import { useEffect, useState } from "react";
+import Logout from "../feature/auth/logout";
 export default function Dashboard() {
   const [name , setName] = useState<string | null>(null);
   const [error , setError] = useState<string | null>(null);
@@ -22,6 +23,7 @@ export default function Dashboard() {
             <p>{error}</p>
             <p>{name}</p>
             <h1>Dashboard</h1>
+            <Logout />
         </div>
     )
 }

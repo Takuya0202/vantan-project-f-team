@@ -2,9 +2,6 @@
 
 import React from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
-import styled from '@emotion/styled'
-import { css } from '@emotion/react'
 import { usePathname } from 'next/navigation'
 // MUIからアイコンを拾ってくる
 import InsightsTwoToneIcon from '@mui/icons-material/InsightsTwoTone'

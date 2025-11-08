@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { OpeningHours, PlaceResult, NearbySearchResponse, GetParkingProps } from '../../types/parking';
+import { PlaceResult, NearbySearchResponse, GetParkingProps } from '@/types/parking';
 /**
  * 指定された緯度経度から半径1km以内の駐車場情報を取得
  */
