@@ -1,5 +1,5 @@
-'use client'
-import { createClient } from "@/utils/supabase/client"
+"use client";
+import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -14,14 +14,14 @@ export default function Logout() {
       console.log(error);
     } else {
       setIsSubmitting(false);
-      router.push('/top');
+      router.push("/top");
     }
-  }
+  };
   return (
     <div>
       <button onClick={handleLogout} disabled={isSubmitting}>
         Logout
       </button>
     </div>
-  )
+  );
 }
