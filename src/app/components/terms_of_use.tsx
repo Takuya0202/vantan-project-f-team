@@ -81,32 +81,32 @@ const AgreeButton = styled.button`
 `;
 
 const Terms_of_use = () => {
-    const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
-    const closeModal = () => setIsOpen(false);
+  const closeModal = () => setIsOpen(false);
 
-    return (
-        <div>
-        <Button onClick={() => setIsOpen(true)}>利用規約</Button>
+  return (
+    <div>
+      <Button onClick={() => setIsOpen(true)}>利用規約</Button>
 
-        {isOpen && (
-            <ModalOverlay onClick={closeModal}>
-            <ModalContent onClick={(e) => e.stopPropagation()} className="text-black text-center">
-                <CloseButton onClick={closeModal}>
-                </CloseButton>
+      {isOpen && (
+        <ModalOverlay onClick={closeModal}>
+          <ModalContent onClick={(e) => e.stopPropagation()} className="text-black text-center">
+            <CloseButton onClick={closeModal}></CloseButton>
 
-                <h2 className="text-xl font-semibold mb-4">利用規約</h2>
-                <p className="leading-relaxed text-gray-700">
-                ！！！！！！本文書く場所！！！！！！<br />
-                src/app/components/terms_of_use.tsxにある
-                </p>
+            <h2 className="text-xl font-semibold mb-4">利用規約</h2>
+            <p className="leading-relaxed text-gray-700">
+              ！！！！！！本文書く場所！！！！！！
+              <br />
+              src/app/components/terms_of_use.tsxにある
+            </p>
 
-                <AgreeButton onClick={closeModal}>同意する</AgreeButton>
-            </ModalContent>
-            </ModalOverlay>
-        )}
-        </div>
-    );
+            <AgreeButton onClick={closeModal}>同意する</AgreeButton>
+          </ModalContent>
+        </ModalOverlay>
+      )}
+    </div>
+  );
 };
 
 export default Terms_of_use;
