@@ -4,12 +4,8 @@ import { createClient } from '@/utils/supabase/server'
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get('code')
-  let next = searchParams.get('next') ?? '/dashboard'
-
-  if (!next.startsWith('/')) {
-    next = '/dashboard'
-  }
-
+  // リダイレクト先のパラメータを取得
+  const next = searchParams.get('next') ?? '/dashboard'
   if (code) {
     const supabase = await createClient()
     const { error } = await supabase.auth.exchangeCodeForSession(code)
