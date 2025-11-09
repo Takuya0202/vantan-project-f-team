@@ -34,10 +34,11 @@ model Place {
 }
 
 model Navigation {
-  id      Int    @id @default(autoincrement())
-  userId  String @unique @map("user_id") @db.Uuid // authenticationのuuid
-  placeId Int    @map("place_id")
-  place   Place  @relation(fields: [placeId], references: [id], onDelete: Cascade)
+  id       Int    @id @default(autoincrement())
+  userId   String @unique @map("user_id") @db.Uuid // authenticationのuuid
+  placeId  Int    @map("place_id")
+  place    Place  @relation(fields: [placeId], references: [id], onDelete: Cascade)
+  distance Float  @map("distance")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
