@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import PinDropIcon from '@mui/icons-material/PinDrop';
 
 type props = {
@@ -7,7 +6,7 @@ type props = {
 }
 export default function Input({value , onChange } : props) {
   return (
-    <div className="flex items-center justify-center pt-[65px]">
+    <div className="flex items-center justify-center">
         <div className="flex items-center bg-gray-500 rounded-3xl w-[334px] h-[39px] px-3">
             <PinDropIcon/>
             <input
