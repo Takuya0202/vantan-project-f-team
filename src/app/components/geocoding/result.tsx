@@ -9,11 +9,11 @@ type props = {
 
 export default function Result({id , place_name, onClick} : props) {
   return (
-        <div className="bg-white">
+        <div className="bg-white opacity-70">
             <div 
             key={id}
             onClick={() => onClick && onClick(id)}
-            className="my-7 mx-4"
+            className="py-6 mx-4"
             >
               <p className="flex items-center space-x-5">
                 <span className="flex flex-col items-center space-y-1">
