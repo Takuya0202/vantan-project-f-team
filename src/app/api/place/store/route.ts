@@ -85,7 +85,16 @@ export async function POST(req: NextRequest) {
 
   // cookieにplaceIdをセット
   const cookie = await cookies();
-  cookie.set("placeId", placeId.toString(), {
+  // すでに存在してるcookieの取得
+  const raw = cookie.get("placeIds")?.value;
+  // json文字列から配列に変換
+  const placeIds: number[] = raw ? JSON.parse(raw) : [];
+  // 検索した場所がcookieに存在してなかったら追加
+  if (!placeIds.includes(placeId)) {
+    placeIds.push(placeId);
+  }
+
+  cookie.set("placeIds", JSON.stringify(placeIds), {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     path: "/",
