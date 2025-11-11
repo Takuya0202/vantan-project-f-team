@@ -89,7 +89,7 @@ export default function Geo({ position }: GeoProps) {
   }
 
   return (
-    <div className="w-full bg-white">
+    <div className="w-full">
         <Input 
           value={address}
           onChange={(e) => setAddress(e.target.value)}
