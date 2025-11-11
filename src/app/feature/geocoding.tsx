@@ -11,9 +11,12 @@ const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
 
 type GeoProps = {
   position: "from" | "to";
-}
+  activeResult: "from" | "to" | null;
+  setActiveResult: React.Dispatch<React.SetStateAction<"from" | "to" | null>>;
+};
 
-export default function Geo({ position }: GeoProps) {
+
+export default function Geo({ position, activeResult, setActiveResult }: GeoProps) {
   const [address, setAddress] = useState("");
   const [result, setResult] = useState<Feature[] | null>(null);
 
@@ -56,6 +59,8 @@ export default function Geo({ position }: GeoProps) {
       return;
     }
 
+    setActiveResult(position);
+
     const timeout = setTimeout(async () => {
       try {
         const res = await fetch(
@@ -82,6 +87,7 @@ export default function Geo({ position }: GeoProps) {
     });
     setResult(null);
     setAddress("");
+    setActiveResult(null);
   };
 
   if (!MAPBOX_TOKEN) {
@@ -89,13 +95,34 @@ export default function Geo({ position }: GeoProps) {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-[390px] relative">
         <Input 
           value={address}
           onChange={(e) => setAddress(e.target.value)}
+          className={
+            position === "from"
+              ? !positionToMap.name 
+                ? "hidden rounded-3xl"  
+                : "rounded-t-3xl border-white mt-px"                                 
+              : position === "to"
+                ? positionToMap.name 
+                  ? "rounded-b-3xl"  
+                  : "rounded-3xl"    
+                : ""
+          }
+          position={
+            position === "from"
+              ? "from"
+              : "to"
+          }
+          placeholder={currentPosition.name ? currentPosition.name : "検索"}
         />
-      {result && result.length > 0 && (
-        <div>
+      {result && result.length > 0 && activeResult === position && (
+        <div
+        className={`absolute left-0 ${
+          position === "from" ? "top-[78px]" : "top-[39px]"
+        }`}
+      >
           {result.map((elem) => (
             <Result 
               id={elem.id} 
