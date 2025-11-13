@@ -1,23 +1,27 @@
-import Image from "next/image";
+import PushPinIcon from '@mui/icons-material/PushPin';
+import PinDropIcon from '@mui/icons-material/PinDrop';
 
 type props = {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-};
-export default function Input({ value, onChange }: props) {
+  value : string,
+  onChange : (e : React.ChangeEvent<HTMLInputElement>) => void
+  className?: string;
+  position?: "from" | "to";
+  placeholder : string;
+}
+export default function Input({value , onChange, className, position, placeholder } : props) {
   return (
-    <div className="flex items-center justify-center pt-[65px]">
-      <div className="flex items-center bg-gray-500 rounded-3xl w-[334px] h-[39px] px-3">
-        <img src="/images/pin.svg" alt="pin" className="w-5 h-5" />
-        <input
-          type="text"
-          value={value}
-          onChange={onChange}
-          placeholder="検索"
-          className="flex-1 bg-transparent text-white placeholder-white focus:outline-none text-center"
-        />
-        <img src="/images/pin.svg" alt="" className="w-5 h-5 opacity-0" />
-      </div>
+    <div className="flex items-center justify-center">
+        <div className={`flex items-center bg-gray-500 w-[334px] h-[39px] px-3 ${className || ""}`}>
+        {position === "from" ? <PushPinIcon /> : <PinDropIcon />}
+            <input
+            type="text"
+            value={value}
+            onChange={onChange}
+            placeholder={placeholder}
+            className="flex-1 bg-transparent text-white placeholder-white focus:outline-none text-center"
+            />
+            <PinDropIcon className="opacity-0"/>
+        </div>
     </div>
   );
 }
