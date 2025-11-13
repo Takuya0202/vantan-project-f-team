@@ -7,20 +7,19 @@ import "mapbox-gl/dist/mapbox-gl.css";
 export default function NavigationMap() {
   const { positionFromMap, positionToMap } = useMap();
   const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN!;
-  
+
   const [viewState, setViewState] = useState({
     longitude: 136.87870458986762,
     latitude: 35.167320433366456,
-    zoom: 12
+    zoom: 12,
   });
-
 
   return (
     <div className="relative w-full h-full">
       <Map
         mapboxAccessToken={MAPBOX_TOKEN}
         {...viewState}
-        onMove={evt => setViewState(evt.viewState)}
+        onMove={(evt) => setViewState(evt.viewState)}
         style={{ width: "100%", height: "100%" }}
         mapStyle="mapbox://styles/mapbox/streets-v12"
         minZoom={5}
@@ -36,7 +35,7 @@ export default function NavigationMap() {
             color="blue"
           />
         )}
-        
+
         {/* 目的地のマーカー */}
         {positionToMap.lat && positionToMap.lng && (
           <Marker

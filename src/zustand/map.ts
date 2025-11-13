@@ -31,10 +31,8 @@ const useMap = create<MapState>((set) => ({
     lng: 0,
   },
   // 修正: パラメータを受け取って設定する
-  setPositionFromMap: (position: Position) => 
-    set({ positionFromMap: position }),
-  setPositionToMap: (position: Position) => 
-    set({ positionToMap: position }),
+  setPositionFromMap: (position: Position) => set({ positionFromMap: position }),
+  setPositionToMap: (position: Position) => set({ positionToMap: position }),
 }));
 
 export default useMap;
