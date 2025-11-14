@@ -42,10 +42,18 @@ export default function Geo({ position, activeResult, setActiveResult }: GeoProp
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+
           setPosition({
             name: "現在地",
-            lat: pos.coords.latitude,
-            lng: pos.coords.longitude,
+            lat: lat,
+            lng: lng,
+          });
+          setViewState({
+            latitude: lat,
+            longitude: lng,
+            zoom: 14,
           });
         },
         (err) => {
