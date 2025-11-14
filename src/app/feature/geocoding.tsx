@@ -5,9 +5,9 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { GeocodingResponse, placeItem } from "@/types/mapbox";
 import Input from "../components/geocoding/input";
 import Result from "../components/geocoding/result";
-import useMap from "@/zustand/map";
 import { SearchLogResponse } from "@/types/searchLog";
 import toast from "react-hot-toast";
+import useMap from "@/zustand/map";
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
 
 type GeoProps = {
@@ -30,7 +30,7 @@ export default function Geo({ position }: GeoProps) {
     }, 100);
   };
 
-  const { positionFromMap, positionToMap, setPositionFromMap, setPositionToMap } = useMap();
+  const { positionFromMap, positionToMap, setPositionFromMap, setPositionToMap , setViewState} = useMap();
 
   // ポジションの取得
   const currentPosition = position === "from" ? positionFromMap : positionToMap;
@@ -48,6 +48,11 @@ export default function Geo({ position }: GeoProps) {
             lat: pos.coords.latitude,
             lng: pos.coords.longitude,
           });
+          setViewState({
+            latitude : pos.coords.latitude,
+            longitude : pos.coords.longitude,
+            zoom : 14,
+          })
         },
         () => {
           toast.error("位置情報の取得に失敗しました。");
@@ -60,7 +65,7 @@ export default function Geo({ position }: GeoProps) {
         }
       );
     }
-  }, [position, currentPosition.name, setPosition]);
+  }, [position, currentPosition.name, setPosition, setViewState]);
 
   // 履歴の取得をする
   useEffect(() => {
@@ -125,6 +130,13 @@ export default function Geo({ position }: GeoProps) {
       lat: elem.latitude,
       lng: elem.longitude,
     });
+    if (position === "to") {
+      setViewState({
+        latitude : elem.latitude,
+        longitude : elem.longitude,
+        zoom : 12,
+      })
+    }
     setResult(null);
     setAddress("");
   };
