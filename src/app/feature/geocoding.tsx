@@ -18,9 +18,9 @@ export default function Geo({ position }: GeoProps) {
   const [address, setAddress] = useState("");
   const [result, setResult] = useState<placeItem[] | null>(null);
   // フォーカスされているinputを管理
-  const [focusInput , setFocusInput] = useState<"from" | "to" | null>(null);
+  const [focusInput, setFocusInput] = useState<"from" | "to" | null>(null);
   // フォーカスする要素を変更
-  const handleFocusChange = (position : "from" | "to") => {
+  const handleFocusChange = (position: "from" | "to") => {
     setFocusInput(position);
   };
 
@@ -28,7 +28,7 @@ export default function Geo({ position }: GeoProps) {
     setTimeout(() => {
       setFocusInput(null);
     }, 100);
-  }
+  };
 
   const { positionFromMap, positionToMap, setPositionFromMap, setPositionToMap } = useMap();
 
@@ -66,21 +66,23 @@ export default function Geo({ position }: GeoProps) {
   useEffect(() => {
     const fetchData = async () => {
       const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/place/log`;
-      const res = await fetch(url , {
-        credentials : "include",
+      const res = await fetch(url, {
+        credentials: "include",
       });
       if (!res.ok) {
         console.log("履歴の取得に失敗しました。");
         return;
       }
-      const data : SearchLogResponse = await res.json();
+      const data: SearchLogResponse = await res.json();
       console.log(data);
-      setResult(data.map((elem) => ({
-        id : elem.id.toString(),
-        name : elem.name,
-        latitude : elem.latitude,
-        longitude : elem.longitude,
-      })));
+      setResult(
+        data.map((elem) => ({
+          id: elem.id.toString(),
+          name: elem.name,
+          latitude: elem.latitude,
+          longitude: elem.longitude,
+        }))
+      );
       console.log(result);
     };
     fetchData();
@@ -99,12 +101,14 @@ export default function Geo({ position }: GeoProps) {
         );
         if (res.ok) {
           const data: GeocodingResponse = await res.json();
-          setResult(data.features.map((feature) => ({
-            id : feature.id,
-            name : feature.place_name,
-            latitude : feature.center[1],
-            longitude : feature.center[0],
-          })));
+          setResult(
+            data.features.map((feature) => ({
+              id: feature.id,
+              name: feature.place_name,
+              latitude: feature.center[1],
+              longitude: feature.center[0],
+            }))
+          );
         }
       } catch (error) {
         console.error(error);
@@ -115,7 +119,7 @@ export default function Geo({ position }: GeoProps) {
   }, [address]);
 
   // 場所選択時の処理
-  const handleSelectPlace = (elem : placeItem) => {
+  const handleSelectPlace = (elem: placeItem) => {
     setPosition({
       name: elem.name,
       lat: elem.latitude,
@@ -151,7 +155,9 @@ export default function Geo({ position }: GeoProps) {
         placeholder={currentPosition.name ? currentPosition.name : "検索"}
       />
       {result && result.length > 0 && focusInput === position && (
-        <div className={`absolute left-0 w-full ${position === "from" ? "top-[78px]" : "top-[39px]"}`}>
+        <div
+          className={`absolute left-0 w-full ${position === "from" ? "top-[78px]" : "top-[39px]"}`}
+        >
           {result.map((elem) => (
             <Result
               id={elem.id}
