@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import useMap from "@/zustand/map";
 import Map, { Marker } from "react-map-gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -19,7 +18,6 @@ export default function NavigationMap() {
         mapStyle="mapbox://styles/mapbox/streets-v12"
         minZoom={5}
         maxZoom={20}
-        zoom={viewState.zoom}
       >
         {/* 出発地のマーカー */}
         {positionFromMap.lat && positionFromMap.lng && (

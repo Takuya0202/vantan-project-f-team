@@ -27,3 +27,11 @@ export type GeocodingResponse = {
   query: string[];
   features: Feature[];
 };
+
+// geocodingの結果を格納する型
+export type placeItem = {
+  id: string;
+  name: string;
+  latitude: number;
+  longitude: number;
+};
