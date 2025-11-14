@@ -7,20 +7,23 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "test": "jest"
+    "prettier": "prettier --write ."
   },
   "dependencies": {
+    "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^7.3.4",
     "@mui/material": "^7.3.4",
+    "@mui/material-nextjs": "^7.3.5",
     "@prisma/client": "^6.18.0",
     "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.75.0",
     "lucide-react": "^0.547.0",
     "next": "15.5.4",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -31,7 +34,8 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.5.4",
-    "jest": "^30.2.0",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.6.2",
     "prisma": "^6.18.0",
     "tailwindcss": "^4",
     "ts-jest": "^29.4.5",

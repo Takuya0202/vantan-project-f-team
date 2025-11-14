@@ -24,30 +24,26 @@ export default function Geo() {
       } catch (error) {
         console.error(error);
       }
-    }, 500); 
+    }, 500);
 
-    return () => clearTimeout(timeout); 
+    return () => clearTimeout(timeout);
   }, [address]);
 
   return (
     <main
-        className="w-[390px] h-[844px] bg-cover bg-center border"
-        // style={{ backgroundImage: "url('/images/map_sample.png')" }}
-        // style={result === null ? { backgroundImage: "url('/images/map_sample.png')" } : {}}
+      className="w-[390px] h-[844px] bg-cover bg-center border"
+      // style={{ backgroundImage: "url('/images/map_sample.png')" }}
+      // style={result === null ? { backgroundImage: "url('/images/map_sample.png')" } : {}}
     >
-      <Input 
-        value={address}
-        onChange={(e) => setAddress(e.target.value)}
-      />
-    
-       {result && (
+      <Input value={address} onChange={(e) => setAddress(e.target.value)} />
+
+      {result && (
         <div>
           {result.map((elem) => (
-              <Result id={elem.id} place_name={elem.place_name} key={elem.id}></Result>
+            <Result id={elem.id} place_name={elem.place_name} key={elem.id}></Result>
           ))}
         </div>
-      )} 
-      
+      )}
     </main>
   );
 }
