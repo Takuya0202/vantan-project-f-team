@@ -26,6 +26,15 @@ export default function Geo({ position, activeResult, setActiveResult }: GeoProp
   const currentPosition = position === "from" ? positionFromMap : positionToMap;
   const setPosition = position === "from" ? setPositionFromMap : setPositionToMap;
 
+  useEffect(() => {
+    if (activeResult === "from" && position === "to") {
+      setAddress("");
+    }
+    else if (activeResult === "to" && position === "from") {
+      setAddress("");
+    }
+  }, [activeResult, position]);
+
   // 初回のみ現在地を取得
   useEffect(() => {
     if (position !== "from" || currentPosition.name) return;
