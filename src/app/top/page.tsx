@@ -2,7 +2,6 @@
 import { useState } from "react";
 import Geo from "../feature/geocoding";
 import NavigationMap from "../feature/navigation-map";
-import { MapProvider } from "react-map-gl/mapbox";
 
 export default function Index() {
   const [activeResult, setActiveResult] = useState<"from" | "to" | null>(null);
@@ -16,9 +15,7 @@ export default function Index() {
 
       {/* マップエリア */}
       <div className="flex-1">
-        <MapProvider>
           <NavigationMap />
-        </MapProvider>
       </div>
     </div>
   );
