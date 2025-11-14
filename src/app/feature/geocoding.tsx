@@ -98,11 +98,13 @@ export default function Geo({ position, activeResult, setActiveResult }: GeoProp
       lat: lat,
       lng: lng,
     });
+  if (position === "to") {
     setViewState({
       latitude: lat,
       longitude: lng,
       zoom: 12,
     });
+  }
     setResult(null);
     setAddress("");
     setActiveResult(null);
