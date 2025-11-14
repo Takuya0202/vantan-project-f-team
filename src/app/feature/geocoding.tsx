@@ -20,7 +20,7 @@ export default function Geo({ position, activeResult, setActiveResult }: GeoProp
   const [address, setAddress] = useState("");
   const [result, setResult] = useState<Feature[] | null>(null);
 
-  const { positionFromMap, positionToMap, setPositionFromMap, setPositionToMap } = useMap();
+  const { positionFromMap, positionToMap, setPositionFromMap, setPositionToMap,setViewState  } = useMap();
 
   // ポジションの取得
   const currentPosition = position === "from" ? positionFromMap : positionToMap;
@@ -89,10 +89,19 @@ export default function Geo({ position, activeResult, setActiveResult }: GeoProp
 
   // 場所選択時の処理
   const handleSelectPlace = (feature: Feature) => {
+
+    const lat = feature.center[1];
+    const lng = feature.center[0];
+
     setPosition({
       name: feature.place_name,
-      lat: feature.center[1],
-      lng: feature.center[0],
+      lat: lat,
+      lng: lng,
+    });
+    setViewState({
+      latitude: lat,
+      longitude: lng,
+      zoom: 12,
     });
     setResult(null);
     setAddress("");
