@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { GeocodingResponse, placeItem } from "@/types/mapbox";
+import { SearchBoxResponse, placeItem } from "@/types/mapbox";
 import Input from "../components/geocoding/input";
 import Result from "../components/geocoding/result";
 import { SearchLogResponse } from "@/types/searchLog";
@@ -19,6 +19,8 @@ export default function Geo({ position }: GeoProps) {
   const [result, setResult] = useState<placeItem[] | null>(null);
   // フォーカスされているinputを管理
   const [focusInput, setFocusInput] = useState<"from" | "to" | null>(null);
+  // 現在地取得。search Boxで使う
+  const [coord, setCoord] = useState<{ latitude: number; longitude: number } | null>(null);
   // フォーカスする要素を変更
   const handleFocusChange = (position: "from" | "to") => {
     setFocusInput(position);
@@ -53,6 +55,10 @@ export default function Geo({ position }: GeoProps) {
             latitude: pos.coords.latitude,
             longitude: pos.coords.longitude,
             zoom: 14,
+          });
+          setCoord({
+            latitude: pos.coords.latitude,
+            longitude: pos.coords.longitude,
           });
         },
         () => {
@@ -102,17 +108,22 @@ export default function Geo({ position }: GeoProps) {
 
     const timeout = setTimeout(async () => {
       try {
-        const res = await fetch(
-          `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?access_token=${MAPBOX_TOKEN}&language=ja&limit=8`
-        );
+        let url = "";
+        if (coord) {
+          url = `https://api.mapbox.com/search/searchbox/v1/forward?q=${encodeURIComponent(address)}&country=JP&language=ja&limit=8&proximity=${coord.longitude},${coord.latitude}&access_token=${MAPBOX_TOKEN}`;
+        } else {
+          url = `https://api.mapbox.com/search/searchbox/v1/forward?q=${encodeURIComponent(address)}&country=JP&language=ja&limit=8&access_token=${MAPBOX_TOKEN}`;
+        }
+        const res = await fetch(url);
         if (res.ok) {
-          const data: GeocodingResponse = await res.json();
+          const data: SearchBoxResponse = await res.json();
+          console.log(data);
           setResult(
             data.features.map((feature) => ({
-              id: feature.id,
-              name: feature.place_name,
-              latitude: feature.center[1],
-              longitude: feature.center[0],
+              id: feature.properties.mapbox_id,
+              name: feature.properties.name,
+              latitude: feature.geometry.coordinates[1],
+              longitude: feature.geometry.coordinates[0],
             }))
           );
         }

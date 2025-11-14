@@ -61,7 +61,5 @@ export default function NavigationMap() {
       .addTo(map.current);
     markers.current.push(toMarker);
   }, [positionFromMap, positionToMap]);
-  return (
-    <div ref={mapboxContainer} className="w-full h-full"></div>
-  );
+  return <div ref={mapboxContainer} className="w-full h-full"></div>;
 }
