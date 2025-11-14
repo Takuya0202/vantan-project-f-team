@@ -30,7 +30,8 @@ export default function Geo({ position }: GeoProps) {
     }, 100);
   };
 
-  const { positionFromMap, positionToMap, setPositionFromMap, setPositionToMap , setViewState} = useMap();
+  const { positionFromMap, positionToMap, setPositionFromMap, setPositionToMap, setViewState } =
+    useMap();
 
   // ポジションの取得
   const currentPosition = position === "from" ? positionFromMap : positionToMap;
@@ -49,10 +50,10 @@ export default function Geo({ position }: GeoProps) {
             lng: pos.coords.longitude,
           });
           setViewState({
-            latitude : pos.coords.latitude,
-            longitude : pos.coords.longitude,
-            zoom : 14,
-          })
+            latitude: pos.coords.latitude,
+            longitude: pos.coords.longitude,
+            zoom: 14,
+          });
         },
         () => {
           toast.error("位置情報の取得に失敗しました。");
@@ -132,10 +133,10 @@ export default function Geo({ position }: GeoProps) {
     });
     if (position === "to") {
       setViewState({
-        latitude : elem.latitude,
-        longitude : elem.longitude,
-        zoom : 12,
-      })
+        latitude: elem.latitude,
+        longitude: elem.longitude,
+        zoom: 12,
+      });
     }
     setResult(null);
     setAddress("");
