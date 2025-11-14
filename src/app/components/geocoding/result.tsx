@@ -1,6 +1,4 @@
 import React from "react";
-import Image from 'next/image'
-
 type props = {
     id: string;
     place_name: string;
