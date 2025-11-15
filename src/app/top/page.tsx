@@ -24,7 +24,7 @@ export default function Index() {
       {/* <div className="fixed bottom-0 z-50">
         <StartNavigation />
       </div> */}
-      {isModalOpen && <GeoModal setIsOpen={setIsModalOpen} time={10} arrivalTime = {"10"} distance={10}/>}
+      {isModalOpen && <GeoModal />}
     </div>
   );
 }
