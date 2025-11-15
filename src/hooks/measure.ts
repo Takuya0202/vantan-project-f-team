@@ -1,10 +1,10 @@
 // 2点間の距離(案内開始地点と終了地点)の距離を計測するフック
 type props = {
-  lat1 :number,
-  lng1 :number,
-  lat2 :number,
-  lng2 :number,
-}
+  lat1: number;
+  lng1: number;
+  lat2: number;
+  lng2: number;
+};
 export default function useMeasure({ lat1, lng1, lat2, lng2 }: props) {
   // 2点間の距離は地球の半径(R)と中心角θで計算できる。
   const R = 6371;
@@ -24,6 +24,6 @@ export default function useMeasure({ lat1, lng1, lat2, lng2 }: props) {
   const distance = R * c;
   return distance;
 }
-function toRad(degres : number) {
-  return degres * Math.PI / 180;
+function toRad(degres: number) {
+  return (degres * Math.PI) / 180;
 }

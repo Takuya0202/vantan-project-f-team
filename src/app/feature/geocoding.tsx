@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { GeocodingResponse, placeItem } from "@/types/mapbox";
@@ -17,6 +16,8 @@ type GeoProps = {
 export default function Geo({ position }: GeoProps) {
   const [address, setAddress] = useState("");
   const [result, setResult] = useState<placeItem[] | null>(null);
+  const { setIsModalOpen } = useMap();
+
   // フォーカスされているinputを管理
   const [focusInput, setFocusInput] = useState<"from" | "to" | null>(null);
   // フォーカスする要素を変更
@@ -30,7 +31,8 @@ export default function Geo({ position }: GeoProps) {
     }, 100);
   };
 
-  const { positionFromMap, positionToMap, setPositionFromMap, setPositionToMap , setViewState} = useMap();
+  const { positionFromMap, positionToMap, setPositionFromMap, setPositionToMap, setViewState } =
+    useMap();
 
   // ポジションの取得
   const currentPosition = position === "from" ? positionFromMap : positionToMap;
@@ -49,10 +51,10 @@ export default function Geo({ position }: GeoProps) {
             lng: pos.coords.longitude,
           });
           setViewState({
-            latitude : pos.coords.latitude,
-            longitude : pos.coords.longitude,
-            zoom : 14,
-          })
+            latitude: pos.coords.latitude,
+            longitude: pos.coords.longitude,
+            zoom: 14,
+          });
         },
         () => {
           toast.error("位置情報の取得に失敗しました。");
@@ -132,11 +134,12 @@ export default function Geo({ position }: GeoProps) {
     });
     if (position === "to") {
       setViewState({
-        latitude : elem.latitude,
-        longitude : elem.longitude,
-        zoom : 12,
-      })
+        latitude: elem.latitude,
+        longitude: elem.longitude,
+        zoom: 12,
+      });
     }
+    setIsModalOpen(true);
     setResult(null);
     setAddress("");
   };
