@@ -1,13 +1,12 @@
-import React from 'react';
-import SpotRanking from '../component/spot'; 
+import React from "react";
+import SpotRanking from "../component/spot";
 
 export default function Spotui() {
-
-    return(
-        <>
-            <div>
-                <SpotRanking />
-            </div>
-        </>
-    );
+  return (
+    <>
+      <div>
+        <SpotRanking />
+      </div>
+    </>
+  );
 }
