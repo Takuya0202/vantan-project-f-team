@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
+import { Toaster } from "react-hot-toast";
+import Footer from "./components/footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,8 +27,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
+      <body className={`${geistSans.variable} ${geistMono.variable} flex flex-col h-screen`}>
+        <AppRouterCacheProvider>
+          <main className="flex-1">
+            {children}
+            <Toaster
+              position="top-center"
+              toastOptions={{
+                duration: 3000,
+              }}
+            />
+          </main>
+          <div className="shrink-0">
+            <Footer />
+          </div>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );

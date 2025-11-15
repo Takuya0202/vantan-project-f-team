@@ -3,6 +3,7 @@ import TwoWheelerIcon from "@mui/icons-material/TwoWheeler";
 import InsightsIcon from "@mui/icons-material/Insights";
 import Footer from "../components/footer";
 import Logout from "../feature/auth/logout";
+
 export default function Dashboard() {
   return (
     <div className="h-full  px-2 ">

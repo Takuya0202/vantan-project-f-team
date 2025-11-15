@@ -1,22 +1,39 @@
-import Image from "next/image";
+import PushPinIcon from "@mui/icons-material/PushPin";
+import PinDropIcon from "@mui/icons-material/PinDrop";
 
 type props = {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  className?: string;
+  position?: "from" | "to";
+  placeholder: string;
+  onFocus: () => void;
+  onBlur: () => void;
 };
-export default function Input({ value, onChange }: props) {
+export default function Input({
+  value,
+  onChange,
+  className,
+  position,
+  placeholder,
+  onFocus,
+  onBlur,
+}: props) {
   return (
-    <div className="flex items-center justify-center pt-[65px]">
-      <div className="flex items-center bg-gray-500 rounded-3xl w-[334px] h-[39px] px-3">
-        <img src="/images/pin.svg" alt="pin" className="w-5 h-5" />
+    <div className="flex items-center justify-center">
+      <div className={`flex items-center bg-gray-500 w-[334px] h-[39px] px-3 ${className || ""}`}>
+        {position === "from" ? <PushPinIcon /> : <PinDropIcon />}
         <input
           type="text"
           value={value}
           onChange={onChange}
-          placeholder="検索"
-          className="flex-1 bg-transparent text-white placeholder-white focus:outline-none text-center"
+          placeholder={placeholder}
+          className="flex-1 bg-transparent text-white placeholder-white focus:outline-none text-center placeholder:opacity-80
+          text-base"
+          onFocus={onFocus}
+          onBlur={onBlur}
         />
-        <img src="/images/pin.svg" alt="" className="w-5 h-5 opacity-0" />
+        <PinDropIcon className="opacity-0" />
       </div>
     </div>
   );
