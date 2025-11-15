@@ -32,7 +32,7 @@ export default function Geo({ position }: GeoProps) {
     }, 100);
   };
 
-  const { positionFromMap, positionToMap, setPositionFromMap, setPositionToMap, setViewState } =
+  const { positionFromMap, positionToMap, setPositionFromMap, setPositionToMap, setViewState, setIsNavigation } =
     useMap();
 
   // ポジションの取得
@@ -147,6 +147,7 @@ export default function Geo({ position }: GeoProps) {
         longitude: elem.longitude,
       });
     }
+    setIsNavigation(true);
     setResult(null);
     setAddress("");
   };

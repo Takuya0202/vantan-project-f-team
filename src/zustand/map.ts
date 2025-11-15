@@ -22,6 +22,8 @@ type MapState = {
     longitude: number;
   };
   setViewState: (v: { latitude: number; longitude: number; zoom?: number }) => void;
+  isNavigation : boolean;
+  setIsNavigation: (isNavigation: boolean) => void;
 };
 
 const useMap = create<MapState>((set) => ({
@@ -45,6 +47,8 @@ const useMap = create<MapState>((set) => ({
 
   // ★ viewState 更新用
   setViewState: (viewState: { latitude: number; longitude: number }) => set({ viewState }),
+  isNavigation : false,
+  setIsNavigation: (isNavigation: boolean) => set({ isNavigation }),
 }));
 
 export default useMap;

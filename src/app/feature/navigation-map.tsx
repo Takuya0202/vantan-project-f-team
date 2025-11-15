@@ -4,9 +4,10 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { useEffect, useRef } from "react";
 import mapboxgl from "mapbox-gl";
 import MapboxLanguage from "@mapbox/mapbox-gl-language";
+import toast from "react-hot-toast";
 
 export default function NavigationMap() {
-  const { positionFromMap, positionToMap, viewState } = useMap();
+  const { positionFromMap, positionToMap, viewState, isNavigation } = useMap();
   // stateや変数にしてしまうとレンダリングが走る恐れがあるので。refにする
   const map = useRef<mapboxgl.Map | null>(null);
   const mapboxContainer = useRef<HTMLDivElement | null>(null);
@@ -21,43 +22,12 @@ export default function NavigationMap() {
       style: "mapbox://styles/mapbox/streets-v12",
       center: [viewState.longitude, viewState.latitude],
       zoom: 8,
-      maxZoom : 8,
-      minZoom : 0,
+      maxZoom : 15,
+      minZoom : 3,
     });
 
     const lang = new MapboxLanguage({ defaultLanguage: "ja" });
     map.current.addControl(lang);
-
-    // 雨雲レーターのマップ
-    map.current.on("load" , () => {
-      if (!map.current) return;
-      map.current.addSource("rain-rader", {
-        type: "raster-array",
-        url: "mapbox://mapbox.weather-jp-nowcast",
-        tileSize: 512  // ドキュメントでは512が推奨されています
-      });
-      
-      map.current.addLayer({
-        id: "rain-rader-layer",
-        type: "raster",
-        source: "rain-rader",
-        "source-layer": "precipitation",
-        paint: {
-          "raster-color-range": [0, 100],  // 降水量の範囲を設定
-          "raster-color": [
-            "interpolate",
-            ["linear"],
-            ["raster-value"],
-            0, "rgba(0, 0, 0, 0)",      // 降水なし(透明)
-            10, "rgba(0, 255, 0, 0.5)",  // 弱い雨(緑)
-            30, "rgba(255, 255, 0, 0.7)", // 中程度の雨(黄)
-            50, "rgba(255, 0, 0, 0.9)"   // 強い雨(赤)
-          ],
-          "raster-opacity": 0.75,
-          "raster-fade-duration": 0
-        }
-      });
-    });
 
     return () => {
       map.current?.remove();
@@ -94,5 +64,76 @@ export default function NavigationMap() {
       .addTo(map.current);
     markers.current.push(toMarker);
   }, [positionFromMap, positionToMap]);
+
+  // ルート案内
+  useEffect(() => {
+    if (!isNavigation || !map.current) return;
+    if (!positionFromMap.lat || !positionFromMap.lng || !positionToMap.lat || !positionToMap.lng) return;
+    
+    const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
+    // geometries=geojsonを追加
+    const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${positionFromMap.lng},${positionFromMap.lat};${positionToMap.lng},${positionToMap.lat}?geometries=geojson&exclude=unpaved&access_token=${MAPBOX_TOKEN}`;
+    
+    const fetchData = async () => {
+      try {
+        const res = await fetch(url);
+        if (!res.ok) {
+          toast.error("ルート案内の取得に失敗しました。");
+          return;
+        }
+        const data = await res.json();
+        console.log(data);
+        
+        // データの存在確認
+        if (!data.routes || data.routes.length === 0) {
+          toast.error("ルートが見つかりませんでした。");
+          return;
+        }
+        
+        const route = data.routes[0].geometry;
+
+        if (!map.current) return;
+        
+        // 既存のルートレイヤーとソースを削除
+        if (map.current.getLayer('route')) {
+          map.current.removeLayer('route');
+        }
+        if (map.current.getSource('route')) {
+          map.current.removeSource('route');
+        }
+        
+        // ルートをマップに追加
+        map.current.addSource("route", {
+          type: "geojson",
+          data: {
+            type: "Feature",
+            properties: {},
+            geometry: route
+          }
+        });
+
+        map.current.addLayer({
+          id: "route",
+          type: "line",
+          source: "route",
+          layout: {
+            'line-join': 'round',
+            'line-cap': 'round'
+          },
+          paint: {
+            "line-color": "#3887be",
+            "line-width": 5,
+            "line-opacity": 0.75,
+          }
+        });
+        
+      } catch (error) {
+        console.error(error);
+        toast.error("ルート案内の取得に失敗しました。");
+      }
+    };
+    
+    fetchData();
+  }, [isNavigation, positionFromMap, positionToMap]);
   return <div ref={mapboxContainer} className="w-full h-full"></div>;
 }
