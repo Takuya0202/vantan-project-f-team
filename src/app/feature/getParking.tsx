@@ -1,17 +1,20 @@
 "use client";
+import useMap from "@/zustand/map";
 import React, { useState, useEffect } from "react";
 import { PlaceResult, NearbySearchResponse, GetParkingProps } from "@/types/parking";
 /**
  * 指定された緯度経度から半径1km以内の駐車場情報を取得
  */
-export default function GetParking({ lat, lng, limit }: GetParkingProps) {
+export default function GetParking() {
+  const { viewState } = useMap();
   const [parkingData, setParkingData] = useState<PlaceResult[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const limit = 10;
 
   useEffect(() => {
     // 緯度経度が有効な値でなければ処理を中断
-    if (!lat || !lng) {
+    if (!viewState.longitude || !viewState.latitude) {
       setLoading(false);
       setError("緯度または経度が無効です。");
       return;
@@ -22,7 +25,7 @@ export default function GetParking({ lat, lng, limit }: GetParkingProps) {
       setError(null);
 
       // ★ リクエスト先を内部APIに変更
-      const url = `/api/parking?lat=${lat}&lng=${lng}`;
+      const url = `/api/parking?lat=${viewState.latitude}&lng=${viewState.longitude}`;
 
       try {
         // 内部APIにリクエスト
@@ -34,7 +37,7 @@ export default function GetParking({ lat, lng, limit }: GetParkingProps) {
           throw new Error(data.error || `APIリクエスト失敗: ${response.status}`);
         }
         if (data.status === "OK") {
-          const results = limit ? data.results.slice(0, limit) : data.results;
+          const results = data.results.slice(0, limit);
           setParkingData(results);
         } else if (data.status === "ZERO_RESULTS") {
           setParkingData([]);
@@ -54,11 +57,11 @@ export default function GetParking({ lat, lng, limit }: GetParkingProps) {
     };
 
     fetchParkingData();
-  }, [lat, lng, limit]);
+  }, [viewState.latitude, viewState.longitude]);
 
   return (
     <div>
-      <h3>検索結果 (周辺1kmの駐車場)</h3>
+      <h3 className="text-center">周辺の駐車場</h3>
       {loading ? (
         <p>検索中...</p>
       ) : error ? (

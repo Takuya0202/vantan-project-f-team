@@ -1,4 +1,5 @@
 import Geo from "../feature/geocoding";
+import GetParking from "../feature/getParking";
 import NavigationMap from "../feature/navigation-map";
 import StartNavigation from "../feature/startNavigation";
 
@@ -18,6 +19,10 @@ export default function Index() {
 
       <div className="fixed bottom-0 z-50">
         <StartNavigation />
+      </div>
+
+      <div className="my-[500px] w-[350px] fixed top-10 z-50 left-1/2 -translate-1/2 bg-white opacity-70 h-[500px] overflow-y-scroll">
+        <GetParking/>
       </div>
     </div>
   );
