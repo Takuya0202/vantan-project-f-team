@@ -23,7 +23,7 @@ export default function Index() {
       {/* <div className="fixed bottom-0 z-50">
         <StartNavigation />
       </div> */}
-      {isModalOpen && <GeoModal setIsOpen={setIsModalOpen} />}
+      {isModalOpen && <GeoModal />}
     </div>
   );
 }
