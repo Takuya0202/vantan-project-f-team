@@ -20,7 +20,6 @@ type MapState = {
   viewState: {
     latitude: number;
     longitude: number;
-    zoom: number;
   };
   setViewState: (v: { latitude: number; longitude: number; zoom?: number }) => void;
 };
@@ -42,17 +41,10 @@ const useMap = create<MapState>((set) => ({
   viewState: {
     latitude: 35.167320433366456,
     longitude: 136.87870458986762,
-    zoom: 12,
   },
 
   // ★ viewState 更新用
-  setViewState: (v) =>
-    set((state) => ({
-      viewState: {
-        ...state.viewState,
-        ...v,
-      },
-    })),
+  setViewState: (viewState: { latitude: number; longitude: number }) => set({ viewState }),
 }));
 
 export default useMap;
