@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { SearchBoxResponse, placeItem } from "@/types/mapbox";
@@ -17,6 +16,8 @@ type GeoProps = {
 export default function Geo({ position }: GeoProps) {
   const [address, setAddress] = useState("");
   const [result, setResult] = useState<placeItem[] | null>(null);
+  const { setIsModalOpen } = useMap();
+
   // フォーカスされているinputを管理
   const [focusInput, setFocusInput] = useState<"from" | "to" | null>(null);
   // 現在地取得。search Boxで使う
@@ -149,6 +150,7 @@ export default function Geo({ position }: GeoProps) {
         zoom: 12,
       });
     }
+    setIsModalOpen(true);
     setResult(null);
     setAddress("");
   };

@@ -23,6 +23,8 @@ type MapState = {
     zoom: number;
   };
   setViewState: (v: { latitude: number; longitude: number; zoom?: number }) => void;
+  isModalOpen: boolean;
+  setIsModalOpen: (value: boolean) => void;
 };
 
 const useMap = create<MapState>((set) => ({
@@ -53,6 +55,8 @@ const useMap = create<MapState>((set) => ({
         ...v,
       },
     })),
+  isModalOpen: false,
+  setIsModalOpen: (value: boolean) => set({ isModalOpen: value }),
 }));
 
 export default useMap;
