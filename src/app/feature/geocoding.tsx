@@ -2,23 +2,35 @@
 
 import { useState, useEffect } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { Feature, GeocodingResponse } from "@/types/mapbox";
+import { SearchBoxResponse, placeItem } from "@/types/mapbox";
 import Input from "../components/geocoding/input";
 import Result from "../components/geocoding/result";
+import { SearchLogResponse } from "@/types/searchLog";
+import toast from "react-hot-toast";
 import useMap from "@/zustand/map";
-
-
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
 
 type GeoProps = {
   position: "from" | "to";
-  activeResult: "from" | "to" | null;
-  setActiveResult: React.Dispatch<React.SetStateAction<"from" | "to" | null>>;
 };
 
-export default function Geo({ position, activeResult, setActiveResult }: GeoProps) {
+export default function Geo({ position }: GeoProps) {
   const [address, setAddress] = useState("");
-  const [result, setResult] = useState<Feature[] | null>(null);
+  const [result, setResult] = useState<placeItem[] | null>(null);
+  // フォーカスされているinputを管理
+  const [focusInput, setFocusInput] = useState<"from" | "to" | null>(null);
+  // 現在地取得。search Boxで使う
+  const [coord, setCoord] = useState<{ latitude: number; longitude: number } | null>(null);
+  // フォーカスする要素を変更
+  const handleFocusChange = (position: "from" | "to") => {
+    setFocusInput(position);
+  };
+
+  const handleBlur = () => {
+    setTimeout(() => {
+      setFocusInput(null);
+    }, 100);
+  };
 
   const { positionFromMap, positionToMap, setPositionFromMap, setPositionToMap, setViewState } =
     useMap();
@@ -27,14 +39,6 @@ export default function Geo({ position, activeResult, setActiveResult }: GeoProp
   const currentPosition = position === "from" ? positionFromMap : positionToMap;
   const setPosition = position === "from" ? setPositionFromMap : setPositionToMap;
 
-  useEffect(() => {
-    if (activeResult === "from" && position === "to") {
-      setAddress("");
-    } else if (activeResult === "to" && position === "from") {
-      setAddress("");
-    }
-  }, [activeResult, position]);
-
   // 初回のみ現在地を取得
   useEffect(() => {
     if (position !== "from" || currentPosition.name) return;
@@ -42,22 +46,23 @@ export default function Geo({ position, activeResult, setActiveResult }: GeoProp
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
-          const lat = pos.coords.latitude;
-          const lng = pos.coords.longitude;
-
           setPosition({
             name: "現在地",
-            lat: lat,
-            lng: lng,
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude,
           });
           setViewState({
-            latitude: lat,
-            longitude: lng,
+            latitude: pos.coords.latitude,
+            longitude: pos.coords.longitude,
             zoom: 14,
           });
+          setCoord({
+            latitude: pos.coords.latitude,
+            longitude: pos.coords.longitude,
+          });
         },
-        (err) => {
-          console.error("位置情報の取得に失敗しました。", err);
+        () => {
+          toast.error("位置情報の取得に失敗しました。");
           // デフォルト位置（vantan名古屋校）
           setPosition({
             name: "vantan名古屋校",
@@ -67,25 +72,60 @@ export default function Geo({ position, activeResult, setActiveResult }: GeoProp
         }
       );
     }
-  }, [position, currentPosition.name, setPosition]);
+  }, [position, currentPosition.name, setPosition, setViewState]);
+
+  // 履歴の取得をする
+  useEffect(() => {
+    const fetchData = async () => {
+      const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/place/log`;
+      const res = await fetch(url, {
+        credentials: "include",
+      });
+      if (!res.ok) {
+        console.log("履歴の取得に失敗しました。");
+        return;
+      }
+      const data: SearchLogResponse = await res.json();
+      console.log(data);
+      setResult(
+        data.map((elem) => ({
+          id: elem.id.toString(),
+          name: elem.name,
+          latitude: elem.latitude,
+          longitude: elem.longitude,
+        }))
+      );
+      console.log(result);
+    };
+    fetchData();
+  }, []);
 
   // ジオコーディングAPI呼び出し（住所検索）
   useEffect(() => {
     if (!address) {
-      setResult(null);
       return;
     }
 
-    setActiveResult(position);
-
     const timeout = setTimeout(async () => {
       try {
-        const res = await fetch(
-          `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?access_token=${MAPBOX_TOKEN}&language=ja&limit=8`
-        );
+        let url = "";
+        if (coord) {
+          url = `https://api.mapbox.com/search/searchbox/v1/forward?q=${encodeURIComponent(address)}&country=JP&language=ja&limit=8&proximity=${coord.longitude},${coord.latitude}&access_token=${MAPBOX_TOKEN}`;
+        } else {
+          url = `https://api.mapbox.com/search/searchbox/v1/forward?q=${encodeURIComponent(address)}&country=JP&language=ja&limit=8&access_token=${MAPBOX_TOKEN}`;
+        }
+        const res = await fetch(url);
         if (res.ok) {
-          const data: GeocodingResponse = await res.json();
-          setResult(data.features);
+          const data: SearchBoxResponse = await res.json();
+          console.log(data);
+          setResult(
+            data.features.map((feature) => ({
+              id: feature.properties.mapbox_id,
+              name: feature.properties.name,
+              latitude: feature.geometry.coordinates[1],
+              longitude: feature.geometry.coordinates[0],
+            }))
+          );
         }
       } catch (error) {
         console.error(error);
@@ -96,25 +136,21 @@ export default function Geo({ position, activeResult, setActiveResult }: GeoProp
   }, [address]);
 
   // 場所選択時の処理
-  const handleSelectPlace = (feature: Feature) => {
-    const lat = feature.center[1];
-    const lng = feature.center[0];
-
+  const handleSelectPlace = (elem: placeItem) => {
     setPosition({
-      name: feature.place_name,
-      lat: lat,
-      lng: lng,
+      name: elem.name,
+      lat: elem.latitude,
+      lng: elem.longitude,
     });
     if (position === "to") {
       setViewState({
-        latitude: lat,
-        longitude: lng,
+        latitude: elem.latitude,
+        longitude: elem.longitude,
         zoom: 12,
       });
     }
     setResult(null);
     setAddress("");
-    setActiveResult(null);
   };
 
   if (!MAPBOX_TOKEN) {
@@ -126,6 +162,8 @@ export default function Geo({ position, activeResult, setActiveResult }: GeoProp
       <Input
         value={address}
         onChange={(e) => setAddress(e.target.value)}
+        onFocus={() => handleFocusChange(position)}
+        onBlur={() => handleBlur()}
         className={
           position === "from"
             ? !positionToMap.name
@@ -140,12 +178,14 @@ export default function Geo({ position, activeResult, setActiveResult }: GeoProp
         position={position === "from" ? "from" : "to"}
         placeholder={currentPosition.name ? currentPosition.name : "検索"}
       />
-      {result && result.length > 0 && activeResult === position && (
-        <div className={`absolute left-0 ${position === "from" ? "top-[78px]" : "top-[39px]"}`}>
+      {result && result.length > 0 && focusInput === position && (
+        <div
+          className={`absolute left-0 w-full ${position === "from" ? "top-[78px]" : "top-[39px]"}`}
+        >
           {result.map((elem) => (
             <Result
               id={elem.id}
-              place_name={elem.place_name}
+              place_name={elem.name}
               key={elem.id}
               onClick={() => handleSelectPlace(elem)}
             />

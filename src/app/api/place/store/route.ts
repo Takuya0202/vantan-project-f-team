@@ -66,12 +66,35 @@ export async function POST(req: NextRequest) {
   // ユーザー情報が存在する場合、ログに追加
   if (user && !error) {
     try {
-      await db.log.create({
-        data: {
+      // 既にログに追加していた場合は更新する
+      const isExisting = await db.log.findFirst({
+        where: {
           userId: user.id,
           placeId: placeId,
         },
       });
+      if (isExisting) {
+        // 既にログに追加していた場合、更新
+        await db.log.update({
+          where: {
+            userId_placeId: {
+              userId: user.id,
+              placeId: placeId,
+            },
+          },
+          data: {
+            updatedAt: new Date(),
+          },
+        });
+      } else {
+        // 初めての場所の場合、作成
+        await db.log.create({
+          data: {
+            userId: user.id,
+            placeId: placeId,
+          },
+        });
+      }
     } catch (error) {
       return NextResponse.json(
         {

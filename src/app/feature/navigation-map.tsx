@@ -1,45 +1,65 @@
 "use client";
-import { useState } from "react";
 import useMap from "@/zustand/map";
-import Map, { Marker } from "react-map-gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
+import { useEffect, useRef } from "react";
+import mapboxgl from "mapbox-gl";
+import MapboxLanguage from "@mapbox/mapbox-gl-language";
 
 export default function NavigationMap() {
-  const { positionFromMap, positionToMap, viewState, setViewState } = useMap();
-  const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN!;
+  const { positionFromMap, positionToMap, viewState } = useMap();
+  // stateや変数にしてしまうとレンダリングが走る恐れがあるので。refにする
+  const map = useRef<mapboxgl.Map | null>(null);
+  const mapboxContainer = useRef<HTMLDivElement | null>(null);
+  const markers = useRef<mapboxgl.Marker[] | null>(null);
 
-  return (
-    <div className="relative w-full h-full">
-      <Map
-        mapboxAccessToken={MAPBOX_TOKEN}
-        {...viewState}
-        onMove={(evt) => setViewState(evt.viewState)}
-        style={{ width: "100%", height: "100%" }}
-        mapStyle="mapbox://styles/mapbox/streets-v12"
-        minZoom={5}
-        maxZoom={20}
-        zoom={viewState.zoom}
-      >
-        {/* 出発地のマーカー */}
-        {positionFromMap.lat && positionFromMap.lng && (
-          <Marker
-            longitude={positionFromMap.lng}
-            latitude={positionFromMap.lat}
-            anchor="bottom"
-            color="blue"
-          />
-        )}
+  useEffect(() => {
+    const accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN!;
+    if (!mapboxContainer.current) return;
+    map.current = new mapboxgl.Map({
+      container: mapboxContainer.current,
+      accessToken: accessToken,
+      style: "mapbox://styles/mapbox/streets-v12",
+      center: [viewState.longitude, viewState.latitude],
+      zoom: viewState.zoom,
+    });
 
-        {/* 目的地のマーカー */}
-        {positionToMap.lat && positionToMap.lng && (
-          <Marker
-            longitude={positionToMap.lng}
-            latitude={positionToMap.lat}
-            anchor="bottom"
-            color="black"
-          />
-        )}
-      </Map>
-    </div>
-  );
+    const lang = new MapboxLanguage({ defaultLanguage: "ja" });
+    map.current.addControl(lang);
+
+    return () => {
+      map.current?.remove();
+      map.current = null;
+    };
+  }, []);
+
+  // viewState変更時
+  useEffect(() => {
+    if (!map.current) return;
+    map.current.setCenter([viewState.longitude, viewState.latitude]);
+  }, [viewState]);
+
+  // マーカーの変更
+  useEffect(() => {
+    if (!map.current) return;
+    // 既存のマーカーを削除
+    markers.current?.forEach((marker) => marker.remove());
+    markers.current = [];
+
+    // 出発地点のマーカーを追加
+    const fromMarker = new mapboxgl.Marker({
+      color: "blue",
+    })
+      .setLngLat([positionFromMap.lng, positionFromMap.lat])
+      .addTo(map.current);
+    markers.current.push(fromMarker);
+
+    // 目的地のマーカーを追加
+    const toMarker = new mapboxgl.Marker({
+      color: "red",
+    })
+      .setLngLat([positionToMap.lng, positionToMap.lat])
+      .addTo(map.current);
+    markers.current.push(toMarker);
+  }, [positionFromMap, positionToMap]);
+  return <div ref={mapboxContainer} className="w-full h-full"></div>;
 }
