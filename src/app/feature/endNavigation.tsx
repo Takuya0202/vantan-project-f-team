@@ -39,7 +39,6 @@ export default function EndNavigation() {
         lat2: currentUserPosition.latitude,
         lng2: currentUserPosition.longitude,
       });
-      console.log(distance);
 
       const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/place/record`, {
         method: "POST",

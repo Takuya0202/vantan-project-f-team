@@ -91,7 +91,6 @@ export default function Geo({ position }: GeoProps) {
         credentials: "include",
       });
       if (!res.ok) {
-        console.log("履歴の取得に失敗しました。");
         return;
       }
       const data: SearchLogResponse = await res.json();
@@ -136,7 +135,7 @@ export default function Geo({ position }: GeoProps) {
           );
         }
       } catch (error) {
-        console.error(error);
+        // エラーハンドリング
       }
     }, 500);
 

@@ -148,31 +148,33 @@ export default function NavigationMap() {
         if (map.current.getSource("route")) map.current.removeSource("route");
 
         // 新しいルートを追加
-        map.current.addSource("route", {
-          type: "geojson",
-          data: {
-            type: "Feature",
-            properties: {},
-            geometry: route,
-          },
-        });
+        map.current.on("load", () => {
+          if (!map.current) return;
+          map.current.addSource("route", {
+            type: "geojson",
+            data: {
+              type: "Feature",
+              properties: {},
+              geometry: route,
+            },
+          });
 
-        map.current.addLayer({
-          id: "route",
-          type: "line",
-          source: "route",
-          layout: {
-            "line-join": "round",
-            "line-cap": "round",
-          },
-          paint: {
-            "line-color": "#3887be",
-            "line-width": 5,
-            "line-opacity": 0.75,
-          },
+          map.current.addLayer({
+            id: "route",
+            type: "line",
+            source: "route",
+            layout: {
+              "line-join": "round",
+              "line-cap": "round",
+            },
+            paint: {
+              "line-color": "#3887be",
+              "line-width": 5,
+              "line-opacity": 0.75,
+            },
+          });
         });
       } catch (error) {
-        console.error(error);
         toast.error("ルート案内の取得に失敗しました。");
       }
     };
@@ -195,13 +197,6 @@ export default function NavigationMap() {
       (position: GeolocationPosition) => {
         const newLat = position.coords.latitude;
         const newLng = position.coords.longitude;
-
-        // 現在地を更新
-        setCurrentUserPosition({
-          latitude: newLat,
-          longitude: newLng,
-        });
-
         // ナビゲーション中の自動更新チェック
         if (isStartedNavigation) {
           const now = Date.now();
@@ -216,10 +211,9 @@ export default function NavigationMap() {
 
               // 約10m以上移動していたらナビを更新
               if (latDiff > 0.0001 || lngDiff > 0.0001) {
-                setPositionFromMap({
-                  name: "現在地",
-                  lat: newLat,
-                  lng: newLng,
+                setCurrentUserPosition({
+                  latitude: newLat,
+                  longitude: newLng,
                 });
                 lastNavUpdateTime.current = now;
                 lastNavPosition.current = { lat: newLat, lng: newLng };

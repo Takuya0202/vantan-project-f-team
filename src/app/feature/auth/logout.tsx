@@ -11,7 +11,7 @@ export default function Logout() {
     const supabase = createClient();
     const { error } = await supabase.auth.signOut();
     if (error) {
-      console.log(error);
+      // エラーハンドリング
     } else {
       setIsSubmitting(false);
       router.push("/top");

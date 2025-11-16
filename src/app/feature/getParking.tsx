@@ -50,7 +50,6 @@ export default function GetParking() {
         } else {
           setError("エラーです。");
         }
-        console.error("Fetch error:", err);
       } finally {
         setLoading(false);
       }

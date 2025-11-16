@@ -20,10 +20,8 @@ export async function POST(req: NextRequest) {
     );
   }
   const body = await req.json();
-  console.log(body);
   const validatedBody = recordSchema.safeParse(body);
   if (!validatedBody.success) {
-    console.log("バリデーション失敗");
     return NextResponse.json(
       {
         error: validatedBody.error,

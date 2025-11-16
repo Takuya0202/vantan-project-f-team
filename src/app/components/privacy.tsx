@@ -94,14 +94,84 @@ const Privacy = () => {
           <ModalContent onClick={(e) => e.stopPropagation()} className="text-black text-center">
             <CloseButton onClick={closeModal}></CloseButton>
 
-            <h2 className="text-xl font-semibold mb-4">プライバシー規約</h2>
-            <p className="leading-relaxed text-gray-700">
-              ！！！！！！本文書く場所！！！！！！
-              <br />
-              src/app/components/privacy.tsxにある
-            </p>
+            <h2 className="text-xl font-semibold mb-4">プライバシーポリシー</h2>
+            <div className="leading-relaxed text-gray-700 text-left space-y-4">
+              <section>
+                <h3 className="font-semibold text-base mb-2">1. 個人情報の取得</h3>
+                <p className="text-sm">
+                  当社は、本サービスの提供にあたり、以下の個人情報を取得します。
+                  <br />
+                  ・ユーザーの位置情報（GPS情報）
+                  <br />
+                  ・認証情報（Googleアカウント情報など）
+                  <br />
+                  ・サービス利用履歴（検索履歴、ナビゲーション履歴など）
+                  <br />
+                  ・お気に入り登録情報
+                </p>
+              </section>
 
-            <AgreeButton onClick={closeModal}>同意する</AgreeButton>
+              <section>
+                <h3 className="font-semibold text-base mb-2">2. 個人情報の利用目的</h3>
+                <p className="text-sm">
+                  取得した個人情報は、以下の目的で利用します。
+                  <br />
+                  ・本サービスの提供・運営のため
+                  <br />
+                  ・ナビゲーション機能の提供のため
+                  <br />
+                  ・駐車場情報の検索・表示のため
+                  <br />
+                  ・ユーザーの利便性向上のため
+                  <br />
+                  ・サービスの改善・新サービスの開発のため
+                  <br />
+                  ・お問い合わせへの対応のため
+                </p>
+              </section>
+
+              <section>
+                <h3 className="font-semibold text-base mb-2">3. 位置情報の取り扱い</h3>
+                <p className="text-sm">
+                  本サービスは、ナビゲーション機能を提供するため、ユーザーの位置情報を取得・利用します。位置情報は、目的地までのルート案内、周辺の駐車場検索などのサービス提供のためにのみ使用され、適切に管理されます。位置情報の取得は、ユーザーが許可した場合にのみ行われます。
+                </p>
+              </section>
+
+              <section>
+                <h3 className="font-semibold text-base mb-2">4. 個人情報の第三者提供</h3>
+                <p className="text-sm">
+                  当社は、法令に基づく場合を除き、ユーザーの同意なく個人情報を第三者に提供することはありません。ただし、サービス提供に必要な範囲で、地図データ提供事業者等の業務委託先に個人情報を提供する場合があります。
+                </p>
+              </section>
+
+              <section>
+                <h3 className="font-semibold text-base mb-2">5. 個人情報の管理</h3>
+                <p className="text-sm">
+                  当社は、個人情報の漏洩、滅失または毀損の防止その他の個人情報の安全管理のために必要かつ適切な措置を講じます。また、個人情報の取り扱いの全部または一部を第三者に委託する場合は、当該第三者について厳正な調査を行い、適切な監督を実施します。
+                </p>
+              </section>
+
+              <section>
+                <h3 className="font-semibold text-base mb-2">6. Cookie等の利用</h3>
+                <p className="text-sm">
+                  本サービスでは、ユーザーの利便性向上のため、Cookieを使用する場合があります。Cookieの使用により、ユーザーの閲覧履歴や入力内容等の情報を取得することがあります。
+                </p>
+              </section>
+
+              <section>
+                <h3 className="font-semibold text-base mb-2">7. 個人情報の開示・訂正・削除</h3>
+                <p className="text-sm">
+                  ユーザーは、当社に対し、個人情報の開示、訂正、削除を求めることができます。お問い合わせは、本サービス内のお問い合わせフォームからご連絡ください。
+                </p>
+              </section>
+
+              <section>
+                <h3 className="font-semibold text-base mb-2">8. プライバシーポリシーの変更</h3>
+                <p className="text-sm">
+                  当社は、必要に応じて本プライバシーポリシーを変更することがあります。変更後のプライバシーポリシーは、本サービス上に表示した時点より効力を生じるものとします。
+                </p>
+              </section>
+            </div>
           </ModalContent>
         </ModalOverlay>
       )}
