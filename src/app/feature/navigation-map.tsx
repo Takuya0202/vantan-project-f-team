@@ -27,8 +27,7 @@ export default function NavigationMap() {
   const markers = useRef<mapboxgl.Marker[]>([]);
   const currentUserMarker = useRef<mapboxgl.Marker | null>(null);
   const [steps, setSteps] = useState<DirectionsStep[]>([]);
-  const watchId = useRef<number | null>(null);
-  const lastNavUpdateTime = useRef<number>(0);
+  const intervalId = useRef<NodeJS.Timeout | null>(null);
   const lastNavPosition = useRef<{ lat: number; lng: number } | null>(null);
 
   // マップの初期化
@@ -68,16 +67,22 @@ export default function NavigationMap() {
     markers.current.forEach((marker) => marker.remove());
     markers.current = [];
 
-    const fromMarker = new mapboxgl.Marker({ color: "blue" })
-      .setLngLat([positionFromMap.lng, positionFromMap.lat])
-      .addTo(map.current);
-    markers.current.push(fromMarker);
+    // 案内開始後は出発地点のマーカーを表示しない（現在地の緑マーカーで代用）
+    if (!isStartedNavigation && positionFromMap.lat && positionFromMap.lng) {
+      const fromMarker = new mapboxgl.Marker({ color: "blue" })
+        .setLngLat([positionFromMap.lng, positionFromMap.lat])
+        .addTo(map.current);
+      markers.current.push(fromMarker);
+    }
 
-    const toMarker = new mapboxgl.Marker({ color: "red" })
-      .setLngLat([positionToMap.lng, positionToMap.lat])
-      .addTo(map.current);
-    markers.current.push(toMarker);
-  }, [positionFromMap, positionToMap]);
+    // 目的地のマーカーは常に表示
+    if (positionToMap.lat && positionToMap.lng) {
+      const toMarker = new mapboxgl.Marker({ color: "red" })
+        .setLngLat([positionToMap.lng, positionToMap.lat])
+        .addTo(map.current);
+      markers.current.push(toMarker);
+    }
+  }, [positionFromMap, positionToMap, isStartedNavigation]);
 
   // 現在地マーカーの更新とマップ中心の移動
   useEffect(() => {
@@ -115,7 +120,7 @@ export default function NavigationMap() {
         ? currentUserPosition.latitude
         : positionFromMap.lat;
     const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
-    const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${directionStartLng},${directionStartLat};${positionToMap.lng},${positionToMap.lat}?geometries=geojson&exclude=unpaved&steps=true&language=ja&access_token=${MAPBOX_TOKEN}`;
+    const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${directionStartLng},${directionStartLat};${positionToMap.lng},${positionToMap.lat}?geometries=geojson&exclude=unpaved&overview=full&steps=true&language=ja&access_token=${MAPBOX_TOKEN}`;
 
     const fetchRoute = async () => {
       try {
@@ -148,8 +153,8 @@ export default function NavigationMap() {
         if (map.current.getSource("route")) map.current.removeSource("route");
 
         // 新しいルートを追加
-        map.current.on("load", () => {
           if (!map.current) return;
+
           map.current.addSource("route", {
             type: "geojson",
             data: {
@@ -173,7 +178,6 @@ export default function NavigationMap() {
               "line-opacity": 0.75,
             },
           });
-        });
       } catch {
         toast.error("ルート案内の取得に失敗しました。");
       }
@@ -189,54 +193,65 @@ export default function NavigationMap() {
     currentUserPosition,
   ]);
 
-  // 現在地の追跡とナビの自動更新
+  // 現在地の追跡とナビの自動更新（15秒ごと）
   useEffect(() => {
-    if (!map.current) return;
+    if (!isStartedNavigation) return;
 
-    watchId.current = navigator.geolocation.watchPosition(
-      (position: GeolocationPosition) => {
-        const newLat = position.coords.latitude;
-        const newLng = position.coords.longitude;
-        // ナビゲーション中の自動更新チェック
-        if (isStartedNavigation) {
-          const now = Date.now();
-          const timeSinceLastUpdate = now - lastNavUpdateTime.current;
+    const updatePosition = () => {
+      navigator.geolocation.getCurrentPosition(
+        (position: GeolocationPosition) => {
+          const newLat = position.coords.latitude;
+          const newLng = position.coords.longitude;
 
-          // 15秒以上経過しているかチェック
-          if (timeSinceLastUpdate >= 15000) {
-            // 前回の位置と比較
-            if (lastNavPosition.current) {
-              const latDiff = Math.abs(newLat - lastNavPosition.current.lat);
-              const lngDiff = Math.abs(newLng - lastNavPosition.current.lng);
+          // 前回の位置と比較
+          if (lastNavPosition.current) {
+            const latDiff = Math.abs(newLat - lastNavPosition.current.lat);
+            const lngDiff = Math.abs(newLng - lastNavPosition.current.lng);
 
-              // 約10m以上移動していたらナビを更新
-              if (latDiff > 0.0001 || lngDiff > 0.0001) {
-                setCurrentUserPosition({
-                  latitude: newLat,
-                  longitude: newLng,
-                });
-                lastNavUpdateTime.current = now;
-                lastNavPosition.current = { lat: newLat, lng: newLng };
-              }
-            } else {
-              // 初回
+            // 約10m以上移動していたら現在地とルートを更新
+            if (latDiff > 0.0001 || lngDiff > 0.0001) {
+              setCurrentUserPosition({
+                latitude: newLat,
+                longitude: newLng,
+              });
+              setPositionFromMap({
+                name: "現在地",
+                lat: newLat,
+                lng: newLng,
+              });
               lastNavPosition.current = { lat: newLat, lng: newLng };
-              lastNavUpdateTime.current = now;
             }
+          } else {
+            // 初回は必ず更新
+            setCurrentUserPosition({
+              latitude: newLat,
+              longitude: newLng,
+            });
+            setPositionFromMap({
+              name: "現在地",
+              lat: newLat,
+              lng: newLng,
+            });
+            lastNavPosition.current = { lat: newLat, lng: newLng };
           }
+        },
+        () => {
+          toast.error("現在地の取得に失敗しました。");
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0,
         }
-      },
-      () => {
-        toast.error("現在地の追跡に失敗しました。");
-      },
-      {
-        enableHighAccuracy: true,
-      }
-    );
+      );
+    };
+
+    // 15秒ごとに位置情報を更新
+    intervalId.current = setInterval(updatePosition, 15000);
 
     return () => {
-      if (watchId.current !== null) {
-        navigator.geolocation.clearWatch(watchId.current);
+      if (intervalId.current) {
+        clearInterval(intervalId.current);
       }
     };
   }, [isStartedNavigation, setCurrentUserPosition, setPositionFromMap]);

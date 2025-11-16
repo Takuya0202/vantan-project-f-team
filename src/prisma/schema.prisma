@@ -35,7 +35,7 @@ model Place {
 
 model Navigation {
   id       Int    @id @default(autoincrement())
-  userId   String @unique @map("user_id") @db.Uuid // authenticationのuuid
+  userId   String @map("user_id") @db.Uuid // authenticationのuuid
   placeId  Int    @map("place_id")
   place    Place  @relation(fields: [placeId], references: [id], onDelete: Cascade)
   distance Float  @map("distance")

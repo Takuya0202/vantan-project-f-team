@@ -155,8 +155,8 @@ export default function Geo({ position }: GeoProps) {
         latitude: elem.latitude,
         longitude: elem.longitude,
       });
-      setIsModalOpen(true);
     }
+    setIsModalOpen(true);
     setIsNavigation(true);
     setResult(null);
     setAddress("");

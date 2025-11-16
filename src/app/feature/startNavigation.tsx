@@ -5,23 +5,37 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 // 案内開始ボタンを押下時にapiを呼び出す
 export default function StartNavigation() {
-  const { positionToMap, setIsStartedNavigation, setIsModalOpen, setStartUserPosition } = useMap();
+  const { positionToMap, setIsStartedNavigation, setIsModalOpen, setStartUserPosition, setCurrentUserPosition, setPositionFromMap } = useMap();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const handleNavigate = async () => {
     try {
       setIsSubmitting(true);
-      // 案内開始地点の位置情報しゅとく
-      navigator.geolocation.getCurrentPosition(
-        (position: GeolocationPosition) => {
-          setStartUserPosition({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          });
-        },
-        () => {
-          toast.error("案内開始地点の取得に失敗しました。位置情報を許可してください。");
-        }
-      );
+      
+      // 案内開始地点の位置情報取得（Promiseでラップして待機可能にする）
+      const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject);
+      }).catch(() => {
+        toast.error("案内開始地点の取得に失敗しました。位置情報を許可してください。");
+        throw new Error("位置情報取得失敗");
+      });
+
+      const currentPosition = {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      };
+      
+      // 案内開始時の位置を保存
+      setStartUserPosition(currentPosition);
+      
+      // 現在地を設定（ピン表示用）
+      setCurrentUserPosition(currentPosition);
+      
+      // 出発地点を現在地に更新（ルート案内用）
+      setPositionFromMap({
+        name: "現在地",
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      });
 
       // 目的地の譲歩王をそうしん
       const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/place/store`;
