@@ -1,9 +1,10 @@
 import StartNavigation from "@/app/feature/startNavigation";
 import CloseIcon from "@mui/icons-material/Close";
 import useMap from "@/zustand/map";
+import GetParking from "@/app/feature/getParking";
 
 export default function GeoModal() {
-  const { setIsModalOpen, isParkingOpen, setIsParkingOpen } = useMap();
+  const { setIsModalOpen, isParkingOpen, setIsParkingOpen,isModalOpen } = useMap();
   const handleCloseModal = () => {
     // 駐車場とモーダルを閉じる
     setIsModalOpen(false);
@@ -40,6 +41,11 @@ export default function GeoModal() {
           <StartNavigation />
         </div>
       </div>
+      {isModalOpen && isParkingOpen && (
+        <div className="w-[390px] fixed z-50 left-1/2 -translate-x-1/2 opacity-70 bottom-0">
+          <GetParking/>
+        </div>
+      )}
     </div>
   );
 }
