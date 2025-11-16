@@ -56,7 +56,7 @@ export default function SpotRanking() {
               key={spot.id}
             >
               <span className="w-13 font-bold text-gray-800">{index + 1}位</span>
-              <div  className="flex-grow text-left text-gray-900 w-[100px] overflow-x-auto mr-7">
+              <div  className="flex-grow text-left text-gray-900 w-[100px] mr-7 overflow-x-auto [&::-webkit-scrollbar]:h-0">
                 <span className="whitespace-nowrap">{spot.name}</span>
               </div>
               <span className="text-base text-gray-700">{spot.view} visit</span>
