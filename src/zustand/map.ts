@@ -22,8 +22,10 @@ type MapState = {
     longitude: number;
   };
   setViewState: (v: { latitude: number; longitude: number; zoom?: number }) => void;
-  isNavigation : boolean;
+  isNavigation: boolean; // 案内モーダルの表示
   setIsNavigation: (isNavigation: boolean) => void;
+  isStartedNavigation: boolean; // これは案内ボタンを押した時
+  setIsStartedNavigation: (isStartedNavigation: boolean) => void;
 };
 
 const useMap = create<MapState>((set) => ({
@@ -47,8 +49,10 @@ const useMap = create<MapState>((set) => ({
 
   // ★ viewState 更新用
   setViewState: (viewState: { latitude: number; longitude: number }) => set({ viewState }),
-  isNavigation : false,
+  isNavigation: false,
   setIsNavigation: (isNavigation: boolean) => set({ isNavigation }),
+  isStartedNavigation: false,
+  setIsStartedNavigation: (isStartedNavigation: boolean) => set({ isStartedNavigation }),
 }));
 
 export default useMap;

@@ -32,8 +32,14 @@ export default function Geo({ position }: GeoProps) {
     }, 100);
   };
 
-  const { positionFromMap, positionToMap, setPositionFromMap, setPositionToMap, setViewState, setIsNavigation } =
-    useMap();
+  const {
+    positionFromMap,
+    positionToMap,
+    setPositionFromMap,
+    setPositionToMap,
+    setViewState,
+    setIsNavigation,
+  } = useMap();
 
   // ポジションの取得
   const currentPosition = position === "from" ? positionFromMap : positionToMap;

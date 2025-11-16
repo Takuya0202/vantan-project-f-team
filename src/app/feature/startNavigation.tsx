@@ -5,7 +5,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 // 案内開始ボタンを押下時にapiを呼び出す
 export default function StartNavigation() {
-  const { positionToMap } = useMap();
+  const { positionToMap, setIsStartedNavigation } = useMap();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const handleNavigate = async () => {
     try {
@@ -27,6 +27,7 @@ export default function StartNavigation() {
         return;
       }
       toast.success("案内に成功しました。");
+      setIsStartedNavigation(true);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "案内に失敗しました。");
     } finally {
