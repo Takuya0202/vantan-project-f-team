@@ -12,7 +12,7 @@ export function Card(props: CardProps) {
   const { name, className, distance, divClassName, icon } = props;
   return (
     <div
-      className={`bg-gray-300 w-[339px] h-[117px] rounded-[5px] flex justify-between items-center ${divClassName}`}
+      className={`bg-white w-[339px] h-[117px] rounded-[5px] flex justify-between items-center ${divClassName}`}
     >
       <div className="ml-[20px]">
         <div className="mb-[24px]">
