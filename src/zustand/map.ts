@@ -25,6 +25,10 @@ type MapState = {
   setViewState: (v: { latitude: number; longitude: number; zoom?: number }) => void;
   isModalOpen: boolean;
   setIsModalOpen: (value: boolean) => void;
+  setIsModalClose: (value: boolean) => void;
+  isParkingOpen: boolean;
+  setIsParkingOpen: (value: boolean) => void;
+  setIsParkingClose: (value: boolean) => void;
 };
 
 const useMap = create<MapState>((set) => ({
@@ -57,6 +61,10 @@ const useMap = create<MapState>((set) => ({
     })),
   isModalOpen: false,
   setIsModalOpen: (value: boolean) => set({ isModalOpen: value }),
+  setIsModalClose: (value: boolean) => set({ isModalOpen: value }),
+  isParkingOpen: false,
+  setIsParkingOpen: (value: boolean) => set({ isParkingOpen: value }),
+  setIsParkingClose: (value: boolean) => set({ isParkingOpen: value }),
 }));
 
 export default useMap;

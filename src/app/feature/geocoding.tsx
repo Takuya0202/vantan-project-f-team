@@ -16,7 +16,8 @@ type GeoProps = {
 export default function Geo({ position }: GeoProps) {
   const [address, setAddress] = useState("");
   const [result, setResult] = useState<placeItem[] | null>(null);
-  const { setIsModalOpen } = useMap();
+  const { setIsModalOpen, isModalOpen, setIsModalClose, isParkingOpen, setIsParkingOpen  } = useMap();
+  
 
   // フォーカスされているinputを管理
   const [focusInput, setFocusInput] = useState<"from" | "to" | null>(null);
@@ -110,6 +111,8 @@ export default function Geo({ position }: GeoProps) {
     const timeout = setTimeout(async () => {
       try {
         let url = "";
+        setIsModalClose(false); 
+        setIsParkingOpen(false);
         if (coord) {
           url = `https://api.mapbox.com/search/searchbox/v1/forward?q=${encodeURIComponent(address)}&country=JP&language=ja&limit=8&proximity=${coord.longitude},${coord.latitude}&access_token=${MAPBOX_TOKEN}`;
         } else {
@@ -149,8 +152,8 @@ export default function Geo({ position }: GeoProps) {
         longitude: elem.longitude,
         zoom: 12,
       });
+      setIsModalOpen(true);
     }
-    setIsModalOpen(true);
     setResult(null);
     setAddress("");
   };
