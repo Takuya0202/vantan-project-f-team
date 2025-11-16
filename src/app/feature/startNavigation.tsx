@@ -36,7 +36,7 @@ export default function StartNavigation() {
   };
   return (
     <button
-      className="flex items-center space-x-2 bg-[#fe0000] rounded-2xl px-4 py-2 text-white"
+      className="flex items-center space-x-2 bg-[#fe0000] rounded-full px-4 py-2 text-white h-[31px]"
       disabled={isSubmitting}
       onClick={handleNavigate}
     >

@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { SearchBoxResponse, placeItem } from "@/types/mapbox";
@@ -17,6 +16,9 @@ type GeoProps = {
 export default function Geo({ position }: GeoProps) {
   const [address, setAddress] = useState("");
   const [result, setResult] = useState<placeItem[] | null>(null);
+  const { setIsModalOpen, isModalOpen, setIsModalClose, isParkingOpen, setIsParkingOpen  } = useMap();
+  
+
   // フォーカスされているinputを管理
   const [focusInput, setFocusInput] = useState<"from" | "to" | null>(null);
   // 現在地取得。search Boxで使う
@@ -114,6 +116,8 @@ export default function Geo({ position }: GeoProps) {
     const timeout = setTimeout(async () => {
       try {
         let url = "";
+        setIsModalClose(false); 
+        setIsParkingOpen(false);
         if (coord) {
           url = `https://api.mapbox.com/search/searchbox/v1/forward?q=${encodeURIComponent(address)}&country=JP&language=ja&limit=8&proximity=${coord.longitude},${coord.latitude}&access_token=${MAPBOX_TOKEN}`;
         } else {
@@ -152,6 +156,7 @@ export default function Geo({ position }: GeoProps) {
         latitude: elem.latitude,
         longitude: elem.longitude,
       });
+      setIsModalOpen(true);
     }
     setIsNavigation(true);
     setResult(null);

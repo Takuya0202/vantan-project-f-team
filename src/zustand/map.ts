@@ -22,10 +22,16 @@ type MapState = {
     longitude: number;
   };
   setViewState: (v: { latitude: number; longitude: number; zoom?: number }) => void;
-  isNavigation: boolean; // 案内モーダルの表示
+  isNavigation: boolean; // 目的地を選択した時にルートapiをfetchするフラグ
   setIsNavigation: (isNavigation: boolean) => void;
   isStartedNavigation: boolean; // これは案内ボタンを押した時
   setIsStartedNavigation: (isStartedNavigation: boolean) => void;
+  isModalOpen: boolean;
+  setIsModalOpen: (value: boolean) => void;
+  setIsModalClose: (value: boolean) => void;
+  isParkingOpen: boolean;
+  setIsParkingOpen: (value: boolean) => void;
+  setIsParkingClose: (value: boolean) => void;
 };
 
 const useMap = create<MapState>((set) => ({
@@ -46,13 +52,18 @@ const useMap = create<MapState>((set) => ({
     latitude: 35.167320433366456,
     longitude: 136.87870458986762,
   },
-
   // ★ viewState 更新用
   setViewState: (viewState: { latitude: number; longitude: number }) => set({ viewState }),
   isNavigation: false,
   setIsNavigation: (isNavigation: boolean) => set({ isNavigation }),
   isStartedNavigation: false,
   setIsStartedNavigation: (isStartedNavigation: boolean) => set({ isStartedNavigation }),
+  isModalOpen: false,
+  setIsModalOpen: (value: boolean) => set({ isModalOpen: value }),
+  setIsModalClose: (value: boolean) => set({ isModalOpen: value }),
+  isParkingOpen: false,
+  setIsParkingOpen: (value: boolean) => set({ isParkingOpen: value }),
+  setIsParkingClose: (value: boolean) => set({ isParkingOpen: value }),
 }));
 
 export default useMap;
