@@ -31,8 +31,26 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { placeId, distance } = validatedBody.data;
+  const { placeName, distance } = validatedBody.data;
   try {
+    const place = await db.place.findFirst({
+      select: {
+        id: true,
+      },
+      where: {
+        name: placeName,
+      },
+    });
+
+    if (!place || !place.id) {
+      return NextResponse.json(
+        {
+          error: "走行距離の記録に失敗しました。",
+        },
+        { status: 404 }
+      );
+    }
+    const placeId = place.id;
     // 走行距離の記録を作成
     await db.navigation.create({
       data: {

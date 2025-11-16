@@ -6,22 +6,9 @@ export interface SpotData {
   name: string;
   view: number;
 }
-//一応デモ残してる
-const demoSpots: SpotData[] = [
-  { id: 101, name: "伏見稲荷大社", view: 5021 },
-  { id: 102, name: "上野動物園", view: 4890 },
-  { id: 103, name: "東京ビッグサイト", view: 4500 },
-  { id: 104, name: "富士山", view: 4123 },
-  { id: 105, name: "白金青い池", view: 3987 },
-  { id: 106, name: "大阪城公園", view: 3500 },
-  { id: 107, name: "平等院鳳凰堂", view: 3110 },
-  { id: 108, name: "清水寺", view: 2988 },
-  { id: 109, name: "国営ひたち海浜公園", view: 2500 },
-  { id: 110, name: "鳥取砂丘", view: 2100 },
-];
 
 export default function SpotRanking() {
-  const [spots, setSpots] = useState<SpotData[]>([]); //デモを表示させたかったら(demoSpots)
+  const [spots, setSpots] = useState<SpotData[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error] = useState<string | null>(null);
   //デモ表示時useEffectコメントアウト
@@ -56,7 +43,7 @@ export default function SpotRanking() {
               key={spot.id}
             >
               <span className="w-13 font-bold text-gray-800">{index + 1}位</span>
-              <div  className="flex-grow text-left text-gray-900 w-[100px] mr-7 overflow-x-auto [&::-webkit-scrollbar]:h-0">
+              <div className="flex-grow text-left text-gray-900 w-[100px] mr-7 overflow-x-auto [&::-webkit-scrollbar]:h-0">
                 <span className="whitespace-nowrap">{spot.name}</span>
               </div>
               <span className="text-base text-gray-700">{spot.view} visit</span>

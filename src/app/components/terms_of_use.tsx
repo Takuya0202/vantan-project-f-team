@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import styled from "@emotion/styled";
-import { css, keyframes } from "@emotion/react";
+import { keyframes } from "@emotion/react";
 
 const fadeIn = keyframes`
     from { opacity: 0; transform: scale(0.95); }
@@ -60,26 +60,6 @@ const CloseButton = styled.button`
     }
 `;
 
-// 同意するボタン
-const AgreeButton = styled.button`
-    margin-top: 24px;
-    padding: 10px 20px;
-    --tw-bg-opacity: 1;
-    background-color: rgba(6, 95, 70, var(--tw-bg-opacity));
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-weight: 500;
-    transition: 0.2s;
-    cursor: pointer;
-
-    &:hover {
-        --tw-bg-opacity: 1;
-        background-color: rgba(6, 78, 59, var(--tw-bg-opacity));
-        transform: scale(1.03);
-    }
-`;
-
 const Terms_of_use = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -95,13 +75,77 @@ const Terms_of_use = () => {
             <CloseButton onClick={closeModal}></CloseButton>
 
             <h2 className="text-xl font-semibold mb-4">利用規約</h2>
-            <p className="leading-relaxed text-gray-700">
-              ！！！！！！本文書く場所！！！！！！
-              <br />
-              src/app/components/terms_of_use.tsxにある
-            </p>
+            <div className="leading-relaxed text-gray-700 text-left space-y-4">
+              <section>
+                <h3 className="font-semibold text-base mb-2">第1条（適用）</h3>
+                <p className="text-sm">
+                  本規約は、本サービスの提供条件及び本サービスの利用に関する当社とユーザーとの間の権利義務関係を定めることを目的とし、ユーザーと当社との間の本サービスの利用に関わる一切の関係に適用されます。
+                </p>
+              </section>
 
-            <AgreeButton onClick={closeModal}>同意する</AgreeButton>
+              <section>
+                <h3 className="font-semibold text-base mb-2">第2条（定義）</h3>
+                <p className="text-sm">
+                  本規約において使用する用語の定義は、次のとおりとします。
+                  <br />
+                  (1)「本サービス」とは、当社が提供するナビゲーション・駐車場検索サービスを意味します。
+                  <br />
+                  (2)「ユーザー」とは、本サービスを利用する全ての方を意味します。
+                </p>
+              </section>
+
+              <section>
+                <h3 className="font-semibold text-base mb-2">第3条（利用登録）</h3>
+                <p className="text-sm">
+                  本サービスの利用を希望する方は、本規約を遵守することに同意し、当社の定める方法によって利用登録を申請することができます。当社は、利用登録の承認をもって、本サービスの利用を許諾します。
+                </p>
+              </section>
+
+              <section>
+                <h3 className="font-semibold text-base mb-2">第4条（位置情報の利用）</h3>
+                <p className="text-sm">
+                  本サービスは、ナビゲーション機能を提供するため、ユーザーの位置情報を取得します。位置情報の取得・利用については、プライバシーポリシーに従って適切に管理されます。
+                </p>
+              </section>
+
+              <section>
+                <h3 className="font-semibold text-base mb-2">第5条（禁止事項）</h3>
+                <p className="text-sm">
+                  ユーザーは、本サービスの利用にあたり、以下の行為をしてはなりません。
+                  <br />
+                  (1)法令または公序良俗に違反する行為
+                  <br />
+                  (2)犯罪行為に関連する行為
+                  <br />
+                  (3)本サービスの運営を妨害するおそれのある行為
+                  <br />
+                  (4)他のユーザーまたは第三者の権利を侵害する行為
+                  <br />
+                  (5)その他、当社が不適切と判断する行為
+                </p>
+              </section>
+
+              <section>
+                <h3 className="font-semibold text-base mb-2">第6条（免責事項）</h3>
+                <p className="text-sm">
+                  当社は、本サービスの内容変更、中断、終了によって生じたいかなる損害についても、一切責任を負いません。また、本サービスの情報の正確性、完全性について保証するものではありません。運転中は必ず交通法規を遵守し、安全運転を心がけてください。
+                </p>
+              </section>
+
+              <section>
+                <h3 className="font-semibold text-base mb-2">第7条（サービス内容の変更等）</h3>
+                <p className="text-sm">
+                  当社は、ユーザーへの事前の告知なく、本サービスの内容を変更、追加または廃止することがあり、ユーザーはこれを予め承諾するものとします。
+                </p>
+              </section>
+
+              <section>
+                <h3 className="font-semibold text-base mb-2">第8条（規約の変更）</h3>
+                <p className="text-sm">
+                  当社は、必要と判断した場合には、ユーザーに通知することなくいつでも本規約を変更することができるものとします。変更後の規約は、本サービス上に表示した時点より効力を生じるものとします。
+                </p>
+              </section>
+            </div>
           </ModalContent>
         </ModalOverlay>
       )}

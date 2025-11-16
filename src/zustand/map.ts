@@ -7,6 +7,13 @@ type Position = {
   lng: number;
 };
 
+// ルート情報の型定義
+type RouteInfo = {
+  distance: number;
+  duration: number;
+  arrivalTime: string;
+};
+
 // 地図の座標を管理するストア
 type MapState = {
   // 出発地点
@@ -30,6 +37,21 @@ type MapState = {
   setIsModalOpen: (isModalOpen: boolean) => void;
   isParkingOpen: boolean;
   setIsParkingOpen: (isParkingOpen: boolean) => void;
+  // ユーザーの現在地を格納する
+  currentUserPosition: {
+    latitude: number | null;
+    longitude: number | null;
+  };
+  setCurrentUserPosition: (currentUserPosition: { latitude: number; longitude: number }) => void;
+  // 案内を開始した時の現在地を格納するユーザー位置情報
+  startUserPosition: {
+    latitude: number | null;
+    longitude: number | null;
+  };
+  setStartUserPosition: (startUserPosition: { latitude: number; longitude: number }) => void;
+  // ルート情報
+  routeInfo: RouteInfo | null;
+  setRouteInfo: (routeInfo: RouteInfo | null) => void;
 };
 
 const useMap = create<MapState>((set) => ({
@@ -60,6 +82,20 @@ const useMap = create<MapState>((set) => ({
   setIsModalOpen: (isModalOpen: boolean) => set({ isModalOpen }),
   isParkingOpen: false,
   setIsParkingOpen: (isParkingOpen: boolean) => set({ isParkingOpen }),
+  currentUserPosition: {
+    latitude: null,
+    longitude: null,
+  },
+  setCurrentUserPosition: (currentUserPosition: { latitude: number; longitude: number }) =>
+    set({ currentUserPosition }),
+  startUserPosition: {
+    latitude: null,
+    longitude: null,
+  },
+  setStartUserPosition: (startUserPosition: { latitude: number; longitude: number }) =>
+    set({ startUserPosition }),
+  routeInfo: null,
+  setRouteInfo: (routeInfo: RouteInfo | null) => set({ routeInfo }),
 }));
 
 export default useMap;

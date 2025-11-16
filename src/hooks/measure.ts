@@ -5,7 +5,7 @@ type props = {
   lat2: number;
   lng2: number;
 };
-export default function useMeasure({ lat1, lng1, lat2, lng2 }: props) {
+export default function measureDistance({ lat1, lng1, lat2, lng2 }: props) {
   // 2点間の距離は地球の半径(R)と中心角θで計算できる。
   const R = 6371;
   // 緯度経度をラジアンに変換
@@ -22,7 +22,7 @@ export default function useMeasure({ lat1, lng1, lat2, lng2 }: props) {
 
   // 距離を計算
   const distance = R * c;
-  return distance;
+  return Math.round(distance);
 }
 function toRad(degres: number) {
   return (degres * Math.PI) / 180;

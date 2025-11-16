@@ -17,7 +17,7 @@ export default function GoogleLogin() {
       },
     });
     if (error) {
-      console.log(error);
+      // エラーハンドリング
     } else {
       setIsSubmitting(false);
     }

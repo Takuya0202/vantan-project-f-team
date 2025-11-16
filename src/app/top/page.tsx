@@ -1,13 +1,12 @@
 "use client";
 import Geo from "../feature/geocoding";
-import GetParking from "../feature/getParking";
 import NavigationMap from "../feature/navigation-map";
 // import StartNavigation from "../feature/startNavigation";
 import useMap from "@/zustand/map";
 import GeoModal from "../components/modal/geoModal";
 
 export default function Index() {
-  const { isModalOpen, isParkingOpen } = useMap();
+  const { isModalOpen } = useMap();
   return (
     <div className="flex flex-col h-screen">
       {/* 入力エリア */}
@@ -22,8 +21,6 @@ export default function Index() {
       </div>
 
       <div>{isModalOpen && <GeoModal />}</div>
-
-
     </div>
   );
 }

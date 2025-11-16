@@ -50,7 +50,6 @@ export default function GetParking() {
         } else {
           setError("エラーです。");
         }
-        console.error("Fetch error:", err);
       } finally {
         setLoading(false);
       }
@@ -61,7 +60,10 @@ export default function GetParking() {
 
   return (
     <div className="relative">
-      <div onClick={() => setIsParkingOpen(false)} className="absolute top-[-30px] w-[100px] left-1/2 -translate-x-1/2 rounded-2xl">
+      <div
+        onClick={() => setIsParkingOpen(false)}
+        className="absolute top-[-30px] w-[100px] left-1/2 -translate-x-1/2 rounded-2xl"
+      >
         <p className="mb-[30px] text-center bg-white rounded-full">案内へ戻る</p>
       </div>
       <div className="h-[360px] overflow-scroll">

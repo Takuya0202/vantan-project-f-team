@@ -1,6 +1,6 @@
 import z from "zod";
 
 export const recordSchema = z.object({
-  placeId: z.number(),
+  placeName: z.string(),
   distance: z.number(),
 });
