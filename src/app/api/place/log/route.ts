@@ -41,4 +41,7 @@ export async function GET() {
       );
     }
   }
+  
+  // placeIdsが空の場合は空配列を返す
+  return NextResponse.json([], { status: 200 });
 }
