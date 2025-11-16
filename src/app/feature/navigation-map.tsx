@@ -174,7 +174,7 @@ export default function NavigationMap() {
             },
           });
         });
-      } catch (error) {
+      } catch {
         toast.error("ルート案内の取得に失敗しました。");
       }
     };

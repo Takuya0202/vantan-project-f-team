@@ -6,7 +6,7 @@ import { PlaceResult, NearbySearchResponse } from "@/types/parking";
  * 指定された緯度経度から半径1km以内の駐車場情報を取得
  */
 export default function GetParking() {
-  const { viewState } = useMap();
+  const { viewState, setIsParkingOpen } = useMap();
   const [parkingData, setParkingData] = useState<PlaceResult[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -60,8 +60,11 @@ export default function GetParking() {
 
   return (
     <div className="relative">
-      <div className="absolute top-[-30px] w-[120px] left-1/2 -translate-x-1/2 rounded-2xl">
-        <p className="mb-[30px] text-center bg-gray-300 rounded-full">周辺の駐車場</p>
+      <div
+        onClick={() => setIsParkingOpen(false)}
+        className="absolute top-[-30px] w-[100px] left-1/2 -translate-x-1/2 rounded-2xl"
+      >
+        <p className="mb-[30px] text-center bg-white rounded-full">案内へ戻る</p>
       </div>
       <div className="h-[360px] overflow-scroll">
         {loading ? (
@@ -73,12 +76,12 @@ export default function GetParking() {
         ) : (
           <ul style={{ listStyleType: "none", paddingLeft: 0 }}>
             {parkingData.map((place, index) => (
-              <li key={index} className="p-2.5 m-[5px] border-b">
+              <li key={index} className="m-[5px] border-b">
                 <div className="flex">
                   <div className="items-center">
                     <p className="text-[50px] mr-3 mx-2 font-bold">P</p>
                   </div>
-                  <div className="flex w-[220px] h-[70px] overflow-scroll items-center">
+                  <div className="flex w-[220px] h-[100px] overflow-scroll items-center">
                     <div>
                       <strong>{place.name}</strong>
                       <p className="mt-[5px] text-[10px]">{place.vicinity}</p>

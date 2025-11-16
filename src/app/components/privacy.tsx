@@ -60,26 +60,6 @@ const CloseButton = styled.button`
     }
 `;
 
-// 同意するボタン
-const AgreeButton = styled.button`
-    margin-top: 24px;
-    padding: 10px 20px;
-    --tw-bg-opacity: 1;
-    background-color: rgba(6, 95, 70, var(--tw-bg-opacity));
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-weight: 500;
-    transition: 0.2s;
-    cursor: pointer;
-
-    &:hover {
-        --tw-bg-opacity: 1;
-        background-color: rgba(6, 78, 59, var(--tw-bg-opacity));
-        transform: scale(1.03);
-    }
-`;
-
 const Privacy = () => {
   const [isOpen, setIsOpen] = useState(false);
 

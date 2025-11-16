@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import styled from "@emotion/styled";
-import { css, keyframes } from "@emotion/react";
+import { keyframes } from "@emotion/react";
 
 const fadeIn = keyframes`
     from { opacity: 0; transform: scale(0.95); }
@@ -57,26 +57,6 @@ const CloseButton = styled.button`
     &:hover {
         transform: rotate(90deg) scale(1.1);
         color: #000;
-    }
-`;
-
-// 同意するボタン
-const AgreeButton = styled.button`
-    margin-top: 24px;
-    padding: 10px 20px;
-    --tw-bg-opacity: 1;
-    background-color: rgba(6, 95, 70, var(--tw-bg-opacity));
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-weight: 500;
-    transition: 0.2s;
-    cursor: pointer;
-
-    &:hover {
-        --tw-bg-opacity: 1;
-        background-color: rgba(6, 78, 59, var(--tw-bg-opacity));
-        transform: scale(1.03);
     }
 `;
 

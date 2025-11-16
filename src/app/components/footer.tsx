@@ -11,6 +11,10 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 const Footer = () => {
   const pathname = usePathname();
 
+  if (pathname === "/auth/login") {
+    return null;
+  }
+
   return (
     <footer className="fixed bottom-0 left-0 w-full bg-gray-300 py-3 flex justify-evenly items-center">
       <Link href="/top">

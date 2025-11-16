@@ -134,8 +134,9 @@ export default function Geo({ position }: GeoProps) {
             }))
           );
         }
-      } catch (error) {
+      } catch {
         // エラーハンドリング
+        toast.error("検索結果が取得できませんでした。");
       }
     }, 500);
 
