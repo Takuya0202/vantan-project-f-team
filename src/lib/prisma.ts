@@ -1,5 +1,5 @@
-import { PrismaClient } from "@/app/generated/prisma/client";
-// prismaを呼び出す時のコード
+import { PrismaClient } from "@prisma/client";
+// prismaを呼び出すためのコード
 declare global {
   var prisma: PrismaClient | undefined;
 }
