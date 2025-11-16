@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+// prismaのセットアップ方法
+// % npx prisma migrate dev --name init
+// % npx prisma generate
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Place {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(255)
+  latitude  Float
+  longitude Float
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  navigations Navigation[]
+  logs        Log[]
+
+  @@map("places")
+}
+
+model Navigation {
+  id       Int    @id @default(autoincrement())
+  userId   String @map("user_id") @db.Uuid // authenticationのuuid
+  placeId  Int    @map("place_id")
+  place    Place  @relation(fields: [placeId], references: [id], onDelete: Cascade)
+  distance Float  @map("distance")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("navigations")
+}
+
+model Log {
+  userId    String   @map("user_id") @db.Uuid
+  placeId   Int      @map("place_id")
+  place     Place    @relation(fields: [placeId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@id([userId, placeId])
+  @@map("logs")
+}
