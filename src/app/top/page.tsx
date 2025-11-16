@@ -30,7 +30,7 @@ export default function Index() {
       
       
         {isModalOpen && isParkingOpen && 
-          <div className="mt-[570px] w-[390px] fixed top-10 z-50 left-1/2 -translate-1/2 opacity-70 bottom-0">
+          <div className="w-[390px] fixed z-50 left-1/2 -translate-x-1/2 opacity-70 bottom-0">
             <GetParking />
           </div>
         }

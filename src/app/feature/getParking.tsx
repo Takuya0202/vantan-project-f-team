@@ -64,7 +64,7 @@ export default function GetParking() {
       <div className="absolute top-[-30px] w-[120px] left-1/2 -translate-x-1/2 rounded-2xl">
         <p className="mb-[30px] text-center bg-gray-300 rounded-full">周辺の駐車場</p>
       </div>
-      <div className="overflow-y-scroll h-[360px]">
+      <div className="h-[360px] overflow-scroll">
         {loading ? (
           <p className="text-center">検索中...</p>
         ) : error ? (
