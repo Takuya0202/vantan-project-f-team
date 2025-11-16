@@ -34,8 +34,14 @@ export default function Geo({ position }: GeoProps) {
     }, 100);
   };
 
-  const { positionFromMap, positionToMap, setPositionFromMap, setPositionToMap, setViewState } =
-    useMap();
+  const {
+    positionFromMap,
+    positionToMap,
+    setPositionFromMap,
+    setPositionToMap,
+    setViewState,
+    setIsNavigation,
+  } = useMap();
 
   // ポジションの取得
   const currentPosition = position === "from" ? positionFromMap : positionToMap;
@@ -56,7 +62,6 @@ export default function Geo({ position }: GeoProps) {
           setViewState({
             latitude: pos.coords.latitude,
             longitude: pos.coords.longitude,
-            zoom: 14,
           });
           setCoord({
             latitude: pos.coords.latitude,
@@ -88,7 +93,6 @@ export default function Geo({ position }: GeoProps) {
         return;
       }
       const data: SearchLogResponse = await res.json();
-      console.log(data);
       setResult(
         data.map((elem) => ({
           id: elem.id.toString(),
@@ -97,7 +101,6 @@ export default function Geo({ position }: GeoProps) {
           longitude: elem.longitude,
         }))
       );
-      console.log(result);
     };
     fetchData();
   }, []);
@@ -111,8 +114,8 @@ export default function Geo({ position }: GeoProps) {
     const timeout = setTimeout(async () => {
       try {
         let url = "";
-        setIsModalClose(false); 
-        setIsParkingOpen(false);
+        // ２回目以降の検索だと、モーダルが邪魔なので閉じる
+        setIsModalOpen(false);
         if (coord) {
           url = `https://api.mapbox.com/search/searchbox/v1/forward?q=${encodeURIComponent(address)}&country=JP&language=ja&limit=8&proximity=${coord.longitude},${coord.latitude}&access_token=${MAPBOX_TOKEN}`;
         } else {
@@ -121,7 +124,6 @@ export default function Geo({ position }: GeoProps) {
         const res = await fetch(url);
         if (res.ok) {
           const data: SearchBoxResponse = await res.json();
-          console.log(data);
           setResult(
             data.features.map((feature) => ({
               id: feature.properties.mapbox_id,
@@ -150,10 +152,10 @@ export default function Geo({ position }: GeoProps) {
       setViewState({
         latitude: elem.latitude,
         longitude: elem.longitude,
-        zoom: 12,
       });
       setIsModalOpen(true);
     }
+    setIsNavigation(true);
     setResult(null);
     setAddress("");
   };

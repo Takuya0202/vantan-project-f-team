@@ -7,7 +7,7 @@ import useMap from "@/zustand/map";
 import GeoModal from "../components/modal/geoModal";
 
 export default function Index() {
-  const { isModalOpen, setIsModalOpen, isParkingOpen, setIsParkingOpen  } = useMap();
+  const { isModalOpen, isParkingOpen } = useMap();
   return (
     <div className="flex flex-col h-screen">
       {/* 入力エリア */}
@@ -21,20 +21,13 @@ export default function Index() {
         <NavigationMap />
       </div>
 
-      {/* <div className="fixed bottom-0 z-50">
-        <StartNavigation />
-      </div> */}
-      <div>
-      {isModalOpen && <GeoModal />}
-      </div>
-      
-      
-        {isModalOpen && isParkingOpen && 
-          <div className="w-[390px] fixed z-50 left-1/2 -translate-x-1/2 opacity-70 bottom-0">
-            <GetParking />
-          </div>
-        }
-      
+      <div>{isModalOpen && <GeoModal />}</div>
+
+      {isModalOpen && isParkingOpen && (
+        <div className="w-[390px] fixed z-50 left-1/2 -translate-x-1/2 opacity-70 bottom-0">
+          <GetParking />
+        </div>
+      )}
     </div>
   );
 }
