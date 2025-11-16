@@ -19,7 +19,7 @@ export default function Logout() {
   };
   return (
     <div>
-      <button onClick={handleLogout} disabled={isSubmitting}>
+      <button onClick={handleLogout} disabled={isSubmitting} className="bg-gray-300 rounded-[5px] px-1">
         Logout
       </button>
     </div>

@@ -22,6 +22,8 @@ export async function GET() {
     );
   }
 
+  console.log("ここまでおけ");
+
   // ユーザーの履歴を取得する。直近1ヶ月。場所名と緯度経度。
   const targetDate = new Date();
   targetDate.setMonth(targetDate.getMonth() - 1);

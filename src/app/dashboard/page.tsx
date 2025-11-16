@@ -1,35 +1,101 @@
 import { Card } from "../components/dashboard/card";
 import TwoWheelerIcon from "@mui/icons-material/TwoWheeler";
 import InsightsIcon from "@mui/icons-material/Insights";
-import Footer from "../components/footer";
+import FilterHdrIcon from "@mui/icons-material/FilterHdr";
 import Logout from "../feature/auth/logout";
+import History from "../components/dashboard/history";
+import { DashboardResponse} from "@/types/dashboard";
+import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
+import { Suspense } from "react";
 
-export default function Dashboard() {
+const getData = async () => {
+  const cookie = await cookies();
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/dashboard`,{
+    method : "GET",
+    headers : {
+      "Cookie" : cookie.toString()
+    },
+    cache : "no-cache"
+  });
+  if (response.status === 401) {
+    redirect("/auth/login");
+  }
+  const data : DashboardResponse = await response.json();
+  return data;
+}
+
+async function Content() {
+  const data = await getData();
   return (
-    <div className="h-full  px-2 ">
-      <div className=" flex flex-col items-center justify-between gap-11 mt-[62px]">
+    <div className="px-2 ">
+      <div className="flex flex-col items-center justify-between space-y-8 mt-4 mb-8">
+        <div className="px-4 flex w-full justify-end h-[13px]">
+          <Logout />
+        </div>
+
         <Card
           name="今日の走行距離"
           className=""
-          distance={10.7}
+          distance={data.distancePerDay}
           divClassName=""
-          icon={<TwoWheelerIcon className="text-[95px] mr-7 " />}
+          icon={<TwoWheelerIcon className="mr-7 text-[95px]!" />}
         />
         <Card
           name="一週間の走行距離"
           className=""
-          distance={108.7}
-          icon={<InsightsIcon className="text-[95px] mr-7 " />}
+          distance={data.distancePerWeek}
+          icon={<InsightsIcon className="mr-7 text-[95px]!" />}
         />
         <Card
           name="今までの走行距離"
           className=""
-          distance={108.7}
-          icon={<InsightsIcon className="text-[95px] mr-7 " />}
+          distance={data.totalDistance}
+          icon={<FilterHdrIcon className=" mr-7 text-[95px]! " />}
         />
       </div>
-      <Logout />
-      <Footer />
+      <div className="bg-gray-300 w-[339px] h-[240px] mx-auto rounded-[5px] overflow-y-auto">
+        <p className="text-[18px] font-sans font-regular px-4 ">履歴</p>
+        {data.places.map((place) => (
+          <History name={place.name} key={place.id} />
+        ))}
+      </div>
     </div>
   );
+}
+
+// ここからローディングスケルトン
+function Loading() {
+  return (
+    <div className="px-2">
+      <div className="flex flex-col items-center justify-between space-y-8 mt-4 mb-8">
+        <div className="px-4 flex w-full justify-end h-[13px]">
+          <div className="h-[13px] w-[60px] rounded bg-gray-300 animate-pulse" />
+        </div>
+
+        <div className="bg-gray-300 w-[339px] h-[117px] rounded-[5px] animate-pulse" />
+        <div className="bg-gray-300 w-[339px] h-[117px] rounded-[5px] animate-pulse" />
+        <div className="bg-gray-300 w-[339px] h-[117px] rounded-[5px] animate-pulse" />
+      </div>
+
+      <div className="bg-gray-300 w-[339px] h-[240px] mx-auto rounded-[5px] overflow-y-auto p-4">
+        <p className="text-[18px] font-sans font-regular mb-2">履歴</p>
+        <div className="space-y-2">
+          <div className="w-full h-[42px] rounded-[5px] bg-gray-200 animate-pulse" />
+          <div className="w-full h-[42px] rounded-[5px] bg-gray-2 00 animate-pulse" />
+          <div className="w-full h-[42px] rounded-[5px] bg-gray-200 animate-pulse" />
+          <div className="w-full h-[42px] rounded-[5px] bg-gray-200 animate-pulse" />
+          <div className="w-full h-[42px] rounded-[5px] bg-gray-200 animate-pulse" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function Dashboard() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <Content />
+    </Suspense>
+  )
 }
