@@ -6,12 +6,14 @@ import { useState } from "react";
 
 // ナビを修了するボタン
 export default function EndNavigation() {
-  const { setIsStartedNavigation } = useMap();
+  const { setIsStartedNavigation, setIsModalOpen } = useMap();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const handleEnd = async () => {
     // 記録を保存するapi書く
     try {
       setIsStartedNavigation(false);
+      // 案内を修了し、再度モーダルを表示する
+      setIsModalOpen(true);
       setIsSubmitting(true);
     } catch (error) {
     } finally {

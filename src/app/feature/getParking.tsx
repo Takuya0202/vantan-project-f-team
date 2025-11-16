@@ -1,7 +1,7 @@
 "use client";
 import useMap from "@/zustand/map";
 import React, { useState, useEffect } from "react";
-import { PlaceResult, NearbySearchResponse, GetParkingProps } from "@/types/parking";
+import { PlaceResult, NearbySearchResponse } from "@/types/parking";
 /**
  * 指定された緯度経度から半径1km以内の駐車場情報を取得
  */
@@ -74,10 +74,7 @@ export default function GetParking() {
         ) : (
           <ul style={{ listStyleType: "none", paddingLeft: 0 }}>
             {parkingData.map((place, index) => (
-              <li
-                key={index}
-                className="p-2.5 m-[5px] border-b"
-              >
+              <li key={index} className="p-2.5 m-[5px] border-b">
                 <div className="flex">
                   <div className="items-center">
                     <p className="text-[50px] mr-3 mx-2 font-bold">P</p>
@@ -90,26 +87,27 @@ export default function GetParking() {
                   </div>
                   <div className="relative">
                     <p className="absolute top-1/2 -translate-y-1/2 text-[13px] text-center w-[90px] text-white">
-                      <span className={`
+                      <span
+                        className={`
                         rounded-2xl px-[5px] py-px
                         ${
                           place.opening_hours
                             ? place.opening_hours.open_now
-                              ? "bg-yellow-600"   // 営業中
-                              : "bg-red-700"     // 営業終了
-                            : "bg-blue-500"      // 不明
+                              ? "bg-yellow-600" // 営業中
+                              : "bg-red-700" // 営業終了
+                            : "bg-blue-500" // 不明
                         }
-                      `}>
-                    {place.opening_hours
-                      ? place.opening_hours.open_now
-                        ? "営業中"
-                        : "営業終了"
-                      : "営業時間不明"}
+                      `}
+                      >
+                        {place.opening_hours
+                          ? place.opening_hours.open_now
+                            ? "営業中"
+                            : "営業終了"
+                          : "営業時間不明"}
                       </span>
                     </p>
                   </div>
                 </div>
-                
               </li>
             ))}
           </ul>

@@ -5,7 +5,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 // 案内開始ボタンを押下時にapiを呼び出す
 export default function StartNavigation() {
-  const { positionToMap, setIsStartedNavigation } = useMap();
+  const { positionToMap, setIsStartedNavigation, setIsModalOpen } = useMap();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const handleNavigate = async () => {
     try {
@@ -28,6 +28,8 @@ export default function StartNavigation() {
       }
       toast.success("案内に成功しました。");
       setIsStartedNavigation(true);
+      // 案内ボタンを押したらモーダル閉じる
+      setIsModalOpen(false);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "案内に失敗しました。");
     } finally {

@@ -3,17 +3,30 @@ import CloseIcon from "@mui/icons-material/Close";
 import useMap from "@/zustand/map";
 
 export default function GeoModal() {
-  const { isModalOpen, setIsModalClose, isParkingOpen, setIsParkingOpen } = useMap();
+  const { setIsModalOpen, isParkingOpen, setIsParkingOpen } = useMap();
+  const handleCloseModal = () => {
+    // 駐車場とモーダルを閉じる
+    setIsModalOpen(false);
+    setIsParkingOpen(false);
+  };
   return (
-    <div className={`bg-blue-200 rounded-2xl z-50 bottom-0 left-0 w-full fixed ${isParkingOpen ? "h-[400px]" : " h-[150px]"}`}>
-      {!isParkingOpen &&
-          <button onClick={() => setIsParkingOpen(true)} className="text-center absolute top-[-40px] bg-gray-300 rounded-full right-[122px]">
-            周辺の駐車場を探す
-          </button>
-      }
+    <div
+      className={`bg-blue-200 rounded-2xl z-50 bottom-0 left-0 w-full fixed ${isParkingOpen ? "h-[400px]" : " h-[150px]"}`}
+    >
+      {!isParkingOpen && (
+        <button
+          onClick={() => setIsParkingOpen(true)}
+          className="text-center absolute top-[-40px] bg-gray-300 rounded-full right-[122px]"
+        >
+          周辺の駐車場を探す
+        </button>
+      )}
 
       <div className="flex justify-end pr-[25px] mt-2.5 relative">
-        <div onClick={() => {setIsModalClose(false); setIsParkingOpen(false)}} className="bg-white rounded-full w-[30px] h-[30px] flex items-center justify-center relative z-50">
+        <div
+          onClick={handleCloseModal}
+          className="bg-white rounded-full w-[30px] h-[30px] flex items-center justify-center relative z-50"
+        >
           <CloseIcon />
         </div>
       </div>

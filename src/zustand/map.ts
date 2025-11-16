@@ -27,11 +27,9 @@ type MapState = {
   isStartedNavigation: boolean; // これは案内ボタンを押した時
   setIsStartedNavigation: (isStartedNavigation: boolean) => void;
   isModalOpen: boolean;
-  setIsModalOpen: (value: boolean) => void;
-  setIsModalClose: (value: boolean) => void;
+  setIsModalOpen: (isModalOpen: boolean) => void;
   isParkingOpen: boolean;
-  setIsParkingOpen: (value: boolean) => void;
-  setIsParkingClose: (value: boolean) => void;
+  setIsParkingOpen: (isParkingOpen: boolean) => void;
 };
 
 const useMap = create<MapState>((set) => ({
@@ -59,11 +57,9 @@ const useMap = create<MapState>((set) => ({
   isStartedNavigation: false,
   setIsStartedNavigation: (isStartedNavigation: boolean) => set({ isStartedNavigation }),
   isModalOpen: false,
-  setIsModalOpen: (value: boolean) => set({ isModalOpen: value }),
-  setIsModalClose: (value: boolean) => set({ isModalOpen: value }),
+  setIsModalOpen: (isModalOpen: boolean) => set({ isModalOpen }),
   isParkingOpen: false,
-  setIsParkingOpen: (value: boolean) => set({ isParkingOpen: value }),
-  setIsParkingClose: (value: boolean) => set({ isParkingOpen: value }),
+  setIsParkingOpen: (isParkingOpen: boolean) => set({ isParkingOpen }),
 }));
 
 export default useMap;

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import styled from "@emotion/styled";
-import { css, keyframes } from "@emotion/react";
+import { keyframes } from "@emotion/react";
 
 const fadeIn = keyframes`
     from { opacity: 0; transform: scale(0.95); }
