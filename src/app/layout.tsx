@@ -27,7 +27,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} flex flex-col h-screen bg-slate-200`} >
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} flex flex-col h-screen bg-slate-200`}
+      >
         <AppRouterCacheProvider>
           <main className="flex-1">
             {children}

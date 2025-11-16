@@ -38,6 +38,11 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const pathName = request.nextUrl.pathname;
+  // ルートURLはtopに遷移
+  if (pathName === "/") {
+    return NextResponse.redirect(new URL("/top", request.url));
+  }
+
   if (pathName.startsWith("/dashboard") && !user) {
     return NextResponse.redirect(new URL("/auth/login", request.url));
   }

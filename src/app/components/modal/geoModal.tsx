@@ -1,10 +1,11 @@
 import StartNavigation from "@/app/feature/startNavigation";
 import CloseIcon from "@mui/icons-material/Close";
 import useMap from "@/zustand/map";
+import { formatDistance, formatDuration } from "@/hooks/format";
 import GetParking from "@/app/feature/getParking";
-
 export default function GeoModal() {
-  const { setIsModalOpen, isParkingOpen, setIsParkingOpen,isModalOpen } = useMap();
+  const { isModalOpen, setIsModalOpen, isParkingOpen, setIsParkingOpen, routeInfo } = useMap();
+
   const handleCloseModal = () => {
     // 駐車場とモーダルを閉じる
     setIsModalOpen(false);
@@ -33,9 +34,23 @@ export default function GeoModal() {
       </div>
       <div className={`flex justify-between items-center ${isParkingOpen ? "hidden" : ""}`}>
         <div className="ml-[26px]">
-          <p className="text-[18px] font-sans font-regular">13分</p>
-          <p className="text-[14px] font-sans font-regular">1:00に到着</p>
-          <p className="text-[14px] font-sans font-regular">20km</p>
+          {routeInfo ? (
+            <>
+              <p className="text-[18px] font-sans font-regular">
+                {formatDuration(routeInfo.duration)}
+              </p>
+              <p className="text-[14px] font-sans font-regular">{routeInfo.arrivalTime}に到着</p>
+              <p className="text-[14px] font-sans font-regular">
+                {formatDistance(routeInfo.distance)}
+              </p>
+            </>
+          ) : (
+            <>
+              <p className="text-[18px]">計算中...</p>
+              <p className="text-[14px]">-</p>
+              <p className="text-[14px]">-</p>
+            </>
+          )}
         </div>
         <div className="pr-[25px]">
           <StartNavigation />
@@ -43,7 +58,7 @@ export default function GeoModal() {
       </div>
       {isModalOpen && isParkingOpen && (
         <div className="w-[390px] fixed z-50 left-1/2 -translate-x-1/2 opacity-70 bottom-0">
-          <GetParking/>
+          <GetParking />
         </div>
       )}
     </div>

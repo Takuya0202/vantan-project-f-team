@@ -17,7 +17,6 @@ export default function Geo({ position }: GeoProps) {
   const [address, setAddress] = useState("");
   const [result, setResult] = useState<placeItem[] | null>(null);
   const { setIsModalOpen } = useMap();
-  
 
   // フォーカスされているinputを管理
   const [focusInput, setFocusInput] = useState<"from" | "to" | null>(null);
@@ -76,6 +75,9 @@ export default function Geo({ position }: GeoProps) {
             lat: 35.167320433366456,
             lng: 136.87870458986762,
           });
+        },
+        {
+          enableHighAccuracy: true,
         }
       );
     }
@@ -89,7 +91,6 @@ export default function Geo({ position }: GeoProps) {
         credentials: "include",
       });
       if (!res.ok) {
-        console.log("履歴の取得に失敗しました。");
         return;
       }
       const data: SearchLogResponse = await res.json();
@@ -133,8 +134,9 @@ export default function Geo({ position }: GeoProps) {
             }))
           );
         }
-      } catch (error) {
-        console.error(error);
+      } catch {
+        // エラーハンドリング
+        toast.error("検索結果が取得できませんでした。");
       }
     }, 500);
 

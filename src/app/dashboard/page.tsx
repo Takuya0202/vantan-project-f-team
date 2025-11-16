@@ -4,31 +4,31 @@ import InsightsIcon from "@mui/icons-material/Insights";
 import FilterHdrIcon from "@mui/icons-material/FilterHdr";
 import Logout from "../feature/auth/logout";
 import History from "../components/dashboard/history";
-import { DashboardResponse} from "@/types/dashboard";
+import { DashboardResponse } from "@/types/dashboard";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { Suspense } from "react";
 
 const getData = async () => {
   const cookie = await cookies();
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/dashboard`,{
-    method : "GET",
-    headers : {
-      "Cookie" : cookie.toString()
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/dashboard`, {
+    method: "GET",
+    headers: {
+      Cookie: cookie.toString(),
     },
-    cache : "no-cache"
+    cache: "no-cache",
   });
   if (response.status === 401) {
     redirect("/auth/login");
   }
-  const data : DashboardResponse = await response.json();
+  const data: DashboardResponse = await response.json();
   return data;
-}
+};
 
 async function Content() {
   const data = await getData();
   return (
-      <div className="px-2 bg-slate-200 min-h-full">
+    <div className="px-2 bg-slate-200 min-h-full">
       <div className="flex flex-col items-center justify-between space-y-8 pt-4 pb-8 bg-slate-200">
         <div className="px-4 flex w-full justify-end h-[13px]">
           <Logout />
@@ -114,5 +114,5 @@ export default function Dashboard() {
     <Suspense fallback={<Loading />}>
       <Content />
     </Suspense>
-  )
+  );
 }

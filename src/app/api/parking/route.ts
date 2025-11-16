@@ -14,7 +14,6 @@ export async function GET(request: Request) {
   const apiKey = process.env.MAPS_API_KEY;
 
   if (!apiKey) {
-    console.error("MAPS_API_KEYが設定されていません。");
     return NextResponse.json({ error: "サーバー側でエラーが発生しました。" }, { status: 500 });
   }
 
@@ -39,7 +38,6 @@ export async function GET(request: Request) {
     // Googleからのレスポンスをそのままクライアントに返す
     return NextResponse.json(data);
   } catch (err) {
-    console.error("Google Maps APIリクエストエラー:", err);
     const errorMessage = err instanceof Error ? err.message : "不明なエラーです。";
     return NextResponse.json(
       { error: `APIリクエストに失敗しました: ${errorMessage}` },
