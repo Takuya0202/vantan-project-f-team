@@ -41,7 +41,6 @@ export async function POST(req: NextRequest) {
         name: placeName,
       },
     });
-
     if (!place || !place.id) {
       return NextResponse.json(
         {
