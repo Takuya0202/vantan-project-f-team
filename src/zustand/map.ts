@@ -20,9 +20,12 @@ type MapState = {
   viewState: {
     latitude: number;
     longitude: number;
-    zoom: number;
   };
   setViewState: (v: { latitude: number; longitude: number; zoom?: number }) => void;
+  isNavigation: boolean; // 目的地を選択した時にルートapiをfetchするフラグ
+  setIsNavigation: (isNavigation: boolean) => void;
+  isStartedNavigation: boolean; // これは案内ボタンを押した時
+  setIsStartedNavigation: (isStartedNavigation: boolean) => void;
   isModalOpen: boolean;
   setIsModalOpen: (value: boolean) => void;
   setIsModalClose: (value: boolean) => void;
@@ -48,17 +51,13 @@ const useMap = create<MapState>((set) => ({
   viewState: {
     latitude: 35.167320433366456,
     longitude: 136.87870458986762,
-    zoom: 12,
   },
-
   // ★ viewState 更新用
-  setViewState: (v) =>
-    set((state) => ({
-      viewState: {
-        ...state.viewState,
-        ...v,
-      },
-    })),
+  setViewState: (viewState: { latitude: number; longitude: number }) => set({ viewState }),
+  isNavigation: false,
+  setIsNavigation: (isNavigation: boolean) => set({ isNavigation }),
+  isStartedNavigation: false,
+  setIsStartedNavigation: (isStartedNavigation: boolean) => set({ isStartedNavigation }),
   isModalOpen: false,
   setIsModalOpen: (value: boolean) => set({ isModalOpen: value }),
   setIsModalClose: (value: boolean) => set({ isModalOpen: value }),

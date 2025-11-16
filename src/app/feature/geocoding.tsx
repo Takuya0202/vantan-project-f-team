@@ -34,8 +34,14 @@ export default function Geo({ position }: GeoProps) {
     }, 100);
   };
 
-  const { positionFromMap, positionToMap, setPositionFromMap, setPositionToMap, setViewState } =
-    useMap();
+  const {
+    positionFromMap,
+    positionToMap,
+    setPositionFromMap,
+    setPositionToMap,
+    setViewState,
+    setIsNavigation,
+  } = useMap();
 
   // ポジションの取得
   const currentPosition = position === "from" ? positionFromMap : positionToMap;
@@ -56,7 +62,6 @@ export default function Geo({ position }: GeoProps) {
           setViewState({
             latitude: pos.coords.latitude,
             longitude: pos.coords.longitude,
-            zoom: 14,
           });
           setCoord({
             latitude: pos.coords.latitude,
@@ -150,10 +155,10 @@ export default function Geo({ position }: GeoProps) {
       setViewState({
         latitude: elem.latitude,
         longitude: elem.longitude,
-        zoom: 12,
       });
       setIsModalOpen(true);
     }
+    setIsNavigation(true);
     setResult(null);
     setAddress("");
   };
