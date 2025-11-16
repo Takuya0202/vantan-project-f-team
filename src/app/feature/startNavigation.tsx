@@ -5,11 +5,25 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 // 案内開始ボタンを押下時にapiを呼び出す
 export default function StartNavigation() {
-  const { positionToMap, setIsStartedNavigation, setIsModalOpen } = useMap();
+  const { positionToMap, setIsStartedNavigation, setIsModalOpen, setStartUserPosition } = useMap();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const handleNavigate = async () => {
     try {
       setIsSubmitting(true);
+      // 案内開始地点の位置情報しゅとく
+      navigator.geolocation.getCurrentPosition(
+        (position: GeolocationPosition) => {
+          setStartUserPosition({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
+        },
+        () => {
+          toast.error("案内開始地点の取得に失敗しました。位置情報を許可してください。");
+        }
+      );
+
+      // 目的地の譲歩王をそうしん
       const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/place/store`;
       const res = await fetch(url, {
         method: "POST",
@@ -49,7 +63,7 @@ export default function StartNavigation() {
           height: "24px",
         }}
       />
-      <span>開始</span>
+      <span>{isSubmitting ? "案内開始中..." : "開始"}</span>
     </button>
   );
 }

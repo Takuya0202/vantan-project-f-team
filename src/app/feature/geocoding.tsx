@@ -75,6 +75,9 @@ export default function Geo({ position }: GeoProps) {
             lat: 35.167320433366456,
             lng: 136.87870458986762,
           });
+        },
+        {
+          enableHighAccuracy: true,
         }
       );
     }
