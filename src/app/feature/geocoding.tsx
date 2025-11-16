@@ -16,7 +16,7 @@ type GeoProps = {
 export default function Geo({ position }: GeoProps) {
   const [address, setAddress] = useState("");
   const [result, setResult] = useState<placeItem[] | null>(null);
-  const { setIsModalOpen, isModalOpen, setIsModalClose, isParkingOpen, setIsParkingOpen  } = useMap();
+  const { setIsModalOpen } = useMap();
   
 
   // フォーカスされているinputを管理
