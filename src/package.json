@@ -19,7 +19,6 @@
     "@mui/material": "^7.3.4",
     "@mui/material-nextjs": "^7.3.5",
     "@prisma/client": "^6.18.0",
-    "lightningcss": "^1.27.0",
     "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.75.0",
     "mapbox-gl": "^3.16.0",
@@ -46,5 +45,8 @@
     "tailwindcss": "^4",
     "ts-jest": "^29.4.5",
     "typescript": "^5"
+  },
+  "optionalDependencies": {
+    "lightningcss-linux-x64-gnu": "^1.30.1"
   }
 }
