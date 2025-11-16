@@ -42,7 +42,7 @@ export default function SpotRanking() {
   }, []);
 
   return (
-    <div className="w-[339px] h-[590px] mx-auto bg-[#EDE3D2] p-6 rounded-lg flex flex-col">
+    <div className="w-[339px] h-[590px] mx-auto bg-[#EDE3D2] p-6 rounded-lg flex flex-col -mt-20">
       <h1 className="text-2xl font-bold mb-4 text-gray-900 text-center">人気スポットランキング</h1>
       <div className="flex-grow overflow-y-auto">
         {isLoading ? (
@@ -56,7 +56,9 @@ export default function SpotRanking() {
               key={spot.id}
             >
               <span className="w-13 font-bold text-gray-800">{index + 1}位</span>
-              <span className="flex-grow text-left text-gray-900">{spot.name}</span>
+              <div  className="flex-grow text-left text-gray-900 w-[100px] overflow-x-auto mr-7">
+                <span className="whitespace-nowrap">{spot.name}</span>
+              </div>
               <span className="text-base text-gray-700">{spot.view} visit</span>
             </div>
           ))

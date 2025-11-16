@@ -23,11 +23,7 @@ export default function Index() {
 
       <div>{isModalOpen && <GeoModal />}</div>
 
-      {isModalOpen && isParkingOpen && (
-        <div className="w-[390px] fixed z-50 left-1/2 -translate-x-1/2 opacity-70 bottom-0">
-          <GetParking />
-        </div>
-      )}
+
     </div>
   );
 }
