@@ -28,8 +28,8 @@ const getData = async () => {
 async function Content() {
   const data = await getData();
   return (
-    <div className="px-2 ">
-      <div className="flex flex-col items-center justify-between space-y-8 mt-4 mb-8">
+      <div className="px-2 bg-slate-200 min-h-full">
+      <div className="flex flex-col items-center justify-between space-y-8 pt-4 pb-8 bg-slate-200">
         <div className="px-4 flex w-full justify-end h-[13px]">
           <Logout />
         </div>
@@ -54,7 +54,7 @@ async function Content() {
           icon={<FilterHdrIcon className=" mr-7 text-[95px]! " />}
         />
       </div>
-      <div className="bg-gray-300 w-[339px] h-[240px] mx-auto rounded-[5px] overflow-y-auto">
+      <div className="bg-white w-[339px] h-[240px] mx-auto rounded-[5px] overflow-y-auto">
         <p className="text-[18px] font-sans font-regular px-4 ">履歴</p>
         {data.places.map((place) => (
           <History name={place.name} key={place.id} />
@@ -67,25 +67,42 @@ async function Content() {
 // ここからローディングスケルトン
 function Loading() {
   return (
-    <div className="px-2">
+    <div className="px-2 bg-slate-200 min-h-full">
       <div className="flex flex-col items-center justify-between space-y-8 mt-4 mb-8">
         <div className="px-4 flex w-full justify-end h-[13px]">
           <div className="h-[13px] w-[60px] rounded bg-gray-300 animate-pulse" />
         </div>
 
-        <div className="bg-gray-300 w-[339px] h-[117px] rounded-[5px] animate-pulse" />
-        <div className="bg-gray-300 w-[339px] h-[117px] rounded-[5px] animate-pulse" />
-        <div className="bg-gray-300 w-[339px] h-[117px] rounded-[5px] animate-pulse" />
+        <div className="bg-white w-[339px] h-[117px] rounded-[5px] flex justify-between items-center">
+          <div className="ml-[20px] space-y-2">
+            <div className="h-[14px] w-[120px] bg-gray-200 rounded animate-pulse" />
+            <div className="h-[24px] w-[80px] bg-gray-200 rounded animate-pulse" />
+          </div>
+          <TwoWheelerIcon className="mr-7 text-[95px] text-gray-300" />
+        </div>
+        <div className="bg-white w-[339px] h-[117px] rounded-[5px] flex justify-between items-center">
+          <div className="ml-[20px] space-y-2">
+            <div className="h-[14px] w-[120px] bg-gray-200 rounded animate-pulse" />
+            <div className="h-[24px] w-[80px] bg-gray-200 rounded animate-pulse" />
+          </div>
+          <InsightsIcon className="mr-7 text-[95px] text-gray-300" />
+        </div>
+        <div className="bg-white w-[339px] h-[117px] rounded-[5px] flex justify-between items-center">
+          <div className="ml-[20px] space-y-2">
+            <div className="h-[14px] w-[120px] bg-gray-200 rounded animate-pulse" />
+            <div className="h-[24px] w-[80px] bg-gray-200 rounded animate-pulse" />
+          </div>
+          <FilterHdrIcon className="mr-7 text-[95px] text-gray-300" />
+        </div>
       </div>
 
-      <div className="bg-gray-300 w-[339px] h-[240px] mx-auto rounded-[5px] overflow-y-auto p-4">
+      <div className="bg-white w-[339px] h-[240px] mx-auto rounded-[5px] overflow-y-auto p-4">
         <p className="text-[18px] font-sans font-regular mb-2">履歴</p>
         <div className="space-y-2">
-          <div className="w-full h-[42px] rounded-[5px] bg-gray-200 animate-pulse" />
-          <div className="w-full h-[42px] rounded-[5px] bg-gray-2 00 animate-pulse" />
-          <div className="w-full h-[42px] rounded-[5px] bg-gray-200 animate-pulse" />
-          <div className="w-full h-[42px] rounded-[5px] bg-gray-200 animate-pulse" />
-          <div className="w-full h-[42px] rounded-[5px] bg-gray-200 animate-pulse" />
+          <div className="w-full h-[42px] rounded-[5px] bg-white animate-pulse" />
+          <div className="w-full h-[42px] rounded-[5px] bg-white animate-pulse" />
+          <div className="w-full h-[42px] rounded-[5px] bg-white animate-pulse" />
+          <div className="w-full h-[42px] rounded-[5px] bg-white animate-pulse" />
         </div>
       </div>
     </div>

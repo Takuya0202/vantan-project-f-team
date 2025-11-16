@@ -11,7 +11,7 @@ type HistoryProps = {
 export default function History({ name }: HistoryProps) {
 
   return (
-    <button className="bg-gray-300 w-full h-[42px] rounded-[5px] flex justify-between items-center px-4"
+    <button className="bg-white w-full h-[42px] rounded-[5px] flex justify-between items-center px-4"
     >
       <div className="flex-1 flex items-center space-x-9">
         <UpdateIcon />
