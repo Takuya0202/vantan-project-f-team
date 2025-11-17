@@ -13,8 +13,8 @@
 外部apiを2つ以上使用することが条件としてアプリの考案から開発、プレゼンまでいたしました。<br>
 
 ## 制作物url
-[こちらをクリック。スマホメインのレスポンシブ](https://b-map-tan.vercel.app)
-[プレゼンスライド](https://drive.google.com/file/d/1lZQgSXY2TKezIxPRknwMVCOu6vpfLmxs/view?usp=sharing)
+[こちらをクリック。スマホメインのレスポンシブ](https://b-map-tan.vercel.app)<br>
+[プレゼンスライド](https://drive.google.com/file/d/1lZQgSXY2TKezIxPRknwMVCOu6vpfLmxs/view?usp=sharing)<br>
 
 ## 技術スタック
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
